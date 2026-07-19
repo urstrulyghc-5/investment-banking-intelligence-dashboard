@@ -1,1 +1,1794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Investment Banking Intelligence Dashboard 2026 · G Hari Charan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#0f172a;color:#e2e8f0;overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.7}
 
+:root{
+  --gold:#c9a227;--gold-lt:#e8b84b;--gold-dk:#8a6c10;
+  --navy:#0f172a;--navy-2:#162032;--navy-3:#1e293b;--navy-4:#253347;
+  --blue:#3b82f6;--blue-lt:#60a5fa;
+  --green:#22c55e;--red:#f05252;--purple:#a78bfa;--teal:#2dd4bf;--amber:#fb923c;
+  --text-1:#e2e8f0;--text-2:#94a3b8;--text-3:#475569;
+  --border-1:rgba(148,163,184,.13);--border-2:rgba(201,162,39,.28);
+  --surface-1:#162032;--surface-2:#1e293b;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:18px;
+  --shadow-sm:0 4px 16px rgba(0,0,0,.32);
+  --shadow-md:0 10px 32px rgba(0,0,0,.45);
+  --shadow-glow:0 0 28px rgba(201,162,39,.18);
+}
+
+/* KEYFRAMES */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes flowGrad{0%{background-position:0%}50%{background-position:200%}100%{background-position:0%}}
+@keyframes rotateSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes borderPulse{0%,100%{border-color:rgba(201,162,39,.18)}50%{border-color:rgba(201,162,39,.55)}}
+@keyframes arrowPulse{0%,100%{transform:translateX(0);opacity:.55}50%{transform:translateX(5px);opacity:1}}
+@keyframes scanLine{0%{top:5%}100%{top:93%}}
+@keyframes tabReveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes orbitRing{from{transform:rotate(0deg) translateX(55px) rotate(0deg)}to{transform:rotate(360deg) translateX(55px) rotate(-360deg)}}
+@keyframes goldShimmer{0%{background-position:-300% center}100%{background-position:300% center}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes flowDash{to{stroke-dashoffset:-20}}
+@keyframes nodeGlow{0%,100%{box-shadow:0 6px 18px rgba(0,0,0,.5)}50%{box-shadow:0 0 22px 4px rgba(201,162,39,.28),0 6px 22px rgba(0,0,0,.5)}}
+
+/* LAUNCH */
+#launch{position:fixed;inset:0;z-index:9999;background:#0f172a;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 1s ease,visibility 1s;overflow:hidden}
+#launch.gone{opacity:0;visibility:hidden;pointer-events:none}
+.globe-wrap{position:relative;width:110px;height:110px;margin-bottom:28px;animation:fadeDown .8s ease .2s both}
+.globe-ring{position:absolute;inset:-14px;border:1px solid rgba(201,162,39,.3);border-radius:50%;animation:rotateSlow 12s linear infinite}
+.globe-ring:nth-child(2){inset:-26px;border-color:rgba(201,162,39,.16);animation-duration:20s;animation-direction:reverse}
+.globe-ring:nth-child(3){inset:-38px;border-color:rgba(201,162,39,.08);animation-duration:30s}
+.globe-core{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 38% 38%,rgba(201,162,39,.22),rgba(201,162,39,.04) 60%,transparent);border:1px solid rgba(201,162,39,.35);display:flex;align-items:center;justify-content:center}
+.globe-orbit{position:absolute;inset:10px;border-radius:50%;border:1px dashed rgba(201,162,39,.28);animation:rotateSlow 8s linear infinite}
+.globe-dot{position:absolute;top:0;left:50%;width:7px;height:7px;border-radius:50%;background:var(--gold-lt);box-shadow:0 0 10px var(--gold-lt);margin-left:-3.5px;margin-top:-3.5px;animation:orbitRing 8s linear infinite}
+.globe-chart{display:flex;align-items:flex-end;gap:3px;height:30px}
+.globe-bar{width:5px;background:var(--gold);border-radius:2px;animation:pulse 1.4s ease-in-out infinite}
+.globe-bar:nth-child(2){height:55%;animation-delay:.15s}.globe-bar:nth-child(3){height:80%;animation-delay:.3s}
+.globe-bar:nth-child(4){height:65%;animation-delay:.45s}.globe-bar:nth-child(5){height:95%;animation-delay:.6s}.globe-bar:nth-child(6){height:72%;animation-delay:.75s}
+.radar-sweep{position:absolute;width:180px;height:180px;border-radius:50%;border:1px solid rgba(201,162,39,.1);bottom:70px;right:70px;opacity:.2}
+.radar-sweep::after{content:'';position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(201,162,39,.3) 0deg 30deg,transparent 30deg 360deg);animation:rotateSlow 4s linear infinite}
+.l-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;animation:fadeUp .7s ease .4s both}
+.l-title{font-family:'DM Serif Display',serif;font-size:clamp(26px,5vw,50px);color:#f1f5f9;text-align:center;line-height:1.1;animation:fadeUp .7s ease .55s both}
+.l-title .acc{background:linear-gradient(90deg,var(--gold-dk),var(--gold-lt),var(--gold-dk));background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:flowGrad 3s linear infinite}
+.l-sub{font-size:11px;color:var(--text-2);letter-spacing:2px;text-transform:uppercase;margin-top:8px;animation:fadeUp .6s ease .7s both}
+.l-bar-wrap{width:240px;height:2px;background:rgba(201,162,39,.1);border-radius:2px;margin-top:28px;overflow:hidden;animation:fadeUp .5s ease .85s both}
+.l-bar{height:100%;background:linear-gradient(90deg,var(--gold-dk),var(--gold-lt));width:0;transition:width .1s}
+.l-pct{font-size:11px;color:var(--gold);font-weight:600;letter-spacing:1px;margin-top:7px;animation:fadeUp .5s ease .85s both}
+.l-credit{font-size:10px;color:var(--text-3);letter-spacing:1.8px;text-transform:uppercase;margin-top:22px;animation:fadeUp .5s ease 1.1s both}
+.l-credit span{color:var(--gold)}
+
+/* MAIN */
+#main{opacity:0;transition:opacity .8s ease}
+#main.vis{opacity:1}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a1120 0%,#0f172a 45%,#0e2040 72%,#0f172a 100%);border-bottom:1px solid var(--border-2);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 85% 50%,rgba(201,162,39,.06),transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);background-size:200%;animation:flowGrad 4s linear infinite}
+.hero-inner{display:flex;justify-content:space-between;align-items:center;padding:38px 56px 32px;gap:28px;flex-wrap:wrap;animation:fadeDown .7s ease both}
+.hero-left{flex:1;min-width:280px}
+.hero-eyebrow{font-size:9px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:9px}
+.hero-eyebrow::before{content:'';width:18px;height:1px;background:var(--gold)}
+.hero-title{font-family:'DM Serif Display',serif;font-size:clamp(22px,2.8vw,40px);color:#f1f5f9;line-height:1.1;margin-bottom:12px;letter-spacing:-.02em}
+.hero-title .gold-flow{background:linear-gradient(90deg,var(--gold-dk),var(--gold-lt),var(--gold-dk));background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:flowGrad 3s linear infinite}
+.hero-sub{font-size:13px;color:var(--text-2);line-height:1.7;max-width:500px;margin-bottom:10px}
+.hero-credit{font-size:10px;color:var(--gold-dk);letter-spacing:1.5px;text-transform:uppercase;font-weight:600}
+.hero-stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat-card{text-align:center;border:1px solid var(--border-2);border-radius:var(--radius-md);padding:16px 20px;background:rgba(201,162,39,.04);transition:all .25s;cursor:default;animation:scaleIn .6s ease both}
+.stat-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:var(--shadow-glow)}
+.stat-val{font-family:'DM Serif Display',serif;font-size:24px;color:var(--gold-lt);display:block;letter-spacing:-.02em}
+.stat-lbl{font-size:9px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-top:4px;display:block}
+
+/* TICKER */
+.ticker{background:#111827;border-bottom:1px solid var(--border-1);padding:7px 0;overflow:hidden}
+.ticker-inner{display:flex;white-space:nowrap;animation:ticker 40s linear infinite;width:max-content}
+.tick{display:inline-flex;align-items:center;gap:7px;padding:0 22px;font-size:11px;color:var(--text-2);border-right:1px solid var(--border-1)}
+.tick .sym{color:#f1f5f9;font-weight:700}.tick .up{color:var(--green)}.tick .dn{color:var(--red)}
+
+/* NAV */
+.nav{background:#111827;border-bottom:1px solid var(--border-1);padding:0 56px;display:flex;overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:200}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{padding:14px 16px;font-size:11.5px;font-weight:600;color:var(--text-3);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:all .2s;position:relative;top:1px;font-family:'Inter',sans-serif;letter-spacing:.2px}
+.nav-btn:hover{color:var(--gold-lt);background:rgba(201,162,39,.04)}
+.nav-btn.act{color:var(--gold-lt);border-bottom-color:var(--gold);background:rgba(201,162,39,.06)}
+
+/* TABS */
+.tab{display:none}.tab.act{display:block;animation:tabReveal .4s cubic-bezier(.22,1,.36,1) both}
+
+/* SECTION — conclusion-style generous spacing */
+.sec{padding:44px 56px;border-bottom:1px solid var(--border-1)}
+
+/* SECTION HEADER — conclusion style */
+.sec-eyebrow{font-size:9.5px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.sec-eyebrow::before{content:'';width:14px;height:1px;background:var(--gold)}
+.sec-title{font-family:'DM Serif Display',serif;font-size:26px;color:#f1f5f9;margin-bottom:10px;letter-spacing:-.01em;line-height:1.2}
+.sec-sub{font-size:13px;color:var(--text-2);margin-bottom:32px;line-height:1.7;max-width:720px}
+
+/* CALLOUT — matches conclusion */
+.callout{background:linear-gradient(135deg,rgba(201,162,39,.08),rgba(30,41,59,.6));border:1px solid var(--border-2);border-radius:var(--radius-lg);padding:28px 32px;position:relative;overflow:hidden;margin-bottom:32px}
+.callout::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 5% 50%,rgba(201,162,39,.04),transparent 70%);pointer-events:none}
+.callout-mark{position:absolute;right:22px;top:-4px;font-family:'DM Serif Display',serif;font-size:100px;color:rgba(201,162,39,.07);line-height:1;pointer-events:none}
+.callout-quote{font-family:'DM Serif Display',serif;font-size:clamp(14px,1.6vw,18px);color:#f1f5f9;line-height:1.65;margin-bottom:10px;position:relative;z-index:1}
+.callout-attr{font-size:10px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;font-weight:600}
+
+/* CARD — conclusion insight style */
+.card{background:var(--surface-1);border:1px solid var(--border-1);border-radius:var(--radius-md);padding:24px 26px;transition:border-color .2s,transform .2s,box-shadow .2s}
+.card:hover{border-color:rgba(148,163,184,.28);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.card-gold{border-color:var(--border-2)!important;background:rgba(201,162,39,.04)!important}
+
+/* SECTION LABEL — same as conclusion "KEY INSIGHTS" */
+.sec-label{font-size:9.5px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border-1)}
+
+/* INSIGHT CARD — identical to conclusion */
+.insight{background:var(--surface-1);border:1px solid var(--border-1);border-left:3px solid var(--gold);border-radius:var(--radius-sm);padding:18px 20px;transition:all .22s;animation:fadeLeft .5s ease both}
+.insight:hover{transform:translateX(4px);border-left-color:var(--gold-lt);box-shadow:var(--shadow-sm)}
+.insight.risk{border-left-color:var(--red)!important;background:linear-gradient(135deg,var(--surface-1),rgba(240,82,82,.04))}
+.insight.rec{border-left-color:var(--green)!important;background:linear-gradient(135deg,var(--surface-1),rgba(34,197,94,.04))}
+.insight.blue{border-left-color:var(--blue-lt)!important}
+.insight.purple{border-left-color:var(--purple)!important}
+.insight.teal{border-left-color:var(--teal)!important}
+.insight.amber{border-left-color:var(--amber)!important}
+.insight-num{font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold);margin-bottom:4px;line-height:1}
+.insight-title{font-size:13px;font-weight:700;color:#f1f5f9;margin-bottom:8px;line-height:1.35}
+.insight-desc{font-size:12px;color:var(--text-2);line-height:1.7}
+
+/* TAKEAWAY — identical to conclusion */
+.takeaway{background:linear-gradient(135deg,var(--navy-3),var(--surface-1));border:1px solid var(--border-2);border-radius:var(--radius-md);padding:22px 18px;text-align:center;transition:all .3s;animation:scaleIn .5s ease both}
+.takeaway:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.takeaway-num{font-family:'DM Serif Display',serif;font-size:32px;color:var(--gold-lt);line-height:1;margin-bottom:8px;letter-spacing:-.02em}
+.takeaway-lbl{font-size:11px;color:#f1f5f9;font-weight:700;margin-bottom:4px;letter-spacing:.1px}
+.takeaway-d{font-size:11px;color:var(--text-2);line-height:1.5}
+
+/* KPI — conclusion stat-card style */
+.kpi{background:var(--surface-1);border:1px solid var(--border-1);border-radius:var(--radius-md);padding:20px 22px;transition:all .25s;animation:scaleIn .5s ease both}
+.kpi:hover{border-color:var(--border-2);transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.kpi-label{font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--text-3);margin-bottom:8px}
+.kpi-val{font-family:'DM Serif Display',serif;font-size:28px;color:#f1f5f9;line-height:1;letter-spacing:-.02em;margin-bottom:6px}
+.kpi-badge{display:inline-flex;align-items:center;font-size:10px;font-weight:600;padding:2px 9px;border-radius:20px}
+.kpi-badge.up{background:rgba(34,197,94,.1);color:var(--green)}
+.kpi-badge.dn{background:rgba(240,82,82,.1);color:var(--red)}
+.kpi-note{font-size:11px;color:var(--text-2);margin-top:6px;line-height:1.55}
+
+/* CHART BOX */
+.cbox{background:var(--surface-1);border:1px solid var(--border-1);border-radius:var(--radius-md);padding:22px 24px;transition:border-color .2s}
+.cbox:hover{border-color:rgba(148,163,184,.25)}
+.cbox-title{font-size:13px;font-weight:700;color:#f1f5f9;margin-bottom:4px;letter-spacing:.05px}
+.cbox-sub{font-size:11px;color:var(--text-2);margin-bottom:16px;line-height:1.55}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.ga{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:16px}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:26px}
+.timeline::before{content:'';position:absolute;left:8px;top:12px;bottom:12px;width:2px;background:linear-gradient(to bottom,var(--gold),var(--blue-lt),var(--gold-dk))}
+.tl-item{position:relative;padding:0 0 26px 28px}
+.tl-item::before{content:'';position:absolute;left:-19px;top:8px;width:11px;height:11px;border-radius:50%;background:var(--gold);border:2px solid var(--navy);box-shadow:0 0 0 3px rgba(201,162,39,.18)}
+.tl-year{font-size:9.5px;font-weight:700;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px}
+.tl-title{font-size:13.5px;font-weight:700;color:#f1f5f9;margin-bottom:5px}
+.tl-desc{font-size:12px;color:var(--text-2);line-height:1.7}
+
+/* FLOW STEPS */
+.flow-wrap{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:6px;margin-bottom:6px}
+.flow-step{flex:1;min-width:130px;background:linear-gradient(135deg,var(--surface-1),var(--navy-3));border:1px solid var(--border-1);padding:20px 14px;text-align:center;position:relative;cursor:pointer;transition:all .3s}
+.flow-step:first-child{border-radius:var(--radius-sm) 0 0 var(--radius-sm)}
+.flow-step:last-child{border-radius:0 var(--radius-sm) var(--radius-sm) 0}
+.flow-step:not(:last-child){border-right:none;margin-right:10px}
+.flow-step:not(:last-child)::after{content:'';position:absolute;right:-13px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:13px solid rgba(201,162,39,.35);border-top:9px solid transparent;border-bottom:9px solid transparent;z-index:3;animation:arrowPulse 2s ease-in-out infinite}
+.flow-step:hover{background:rgba(201,162,39,.06);border-color:rgba(201,162,39,.4);transform:translateY(-5px);box-shadow:var(--shadow-md)}
+.flow-step:hover::after{border-left-color:var(--gold)}
+.flow-bar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-lt));width:0;transition:width .4s}
+.flow-step:hover .flow-bar{width:100%}
+.flow-num{font-size:9px;font-weight:700;color:var(--gold);letter-spacing:1px;margin-bottom:10px;display:block}
+.flow-title{font-size:12px;font-weight:700;color:#f1f5f9;margin-bottom:6px}
+.flow-desc{font-size:10.5px;color:var(--text-2);line-height:1.6}
+
+/* BADGE */
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+
+/* PROGRESS BAR */
+.prog-row{margin-bottom:14px}
+.prog-label-row{display:flex;justify-content:space-between;margin-bottom:5px}
+.prog-label{font-size:11.5px;color:#f1f5f9;font-weight:600}
+.prog-val{font-size:11.5px;color:var(--gold-lt);font-weight:700}
+.prog-track{background:rgba(148,163,184,.1);border-radius:4px;height:6px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold-dk),var(--gold-lt))}
+
+/* ENODE FLOW */
+.eflow{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:22px 36px;padding:18px 6px 26px;margin-top:20px}
+.enode{position:relative;background:linear-gradient(135deg,var(--surface-1),var(--navy-3));border:1px solid var(--border-2);border-radius:var(--radius-md);padding:16px 12px;text-align:center;cursor:pointer;transition:transform .3s,border-color .3s;animation:floatY 5s ease-in-out infinite;z-index:2}
+.enode:hover{transform:translateY(-6px) scale(1.03);border-color:var(--gold-lt);animation:nodeGlow 2s ease-in-out infinite}
+.enode-dot{position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+.enode-year{font-size:9px;font-weight:700;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+.enode-title{font-size:11.5px;font-weight:700;color:#f1f5f9;margin-bottom:3px;line-height:1.3}
+.enode-desc{font-size:9.5px;color:var(--text-2);line-height:1.5}
+.eflow-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.eflow-svg path{fill:none;stroke:rgba(201,162,39,.38);stroke-width:1.3;stroke-dasharray:5 6;animation:flowDash 1.8s linear infinite}
+.eflow-svg .glow-path{stroke:rgba(201,162,39,.1);stroke-width:7;stroke-dasharray:none;animation:none;filter:blur(3px)}
+
+/* HUB-SPOKE (Types) */
+.hub-flow{position:relative;height:480px;margin-top:22px;background:radial-gradient(ellipse at center,rgba(201,162,39,.04),transparent 65%);border:1px solid var(--border-1);border-radius:var(--radius-lg);overflow:hidden}
+.hub-node{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:124px;height:124px;border-radius:50%;background:radial-gradient(circle,var(--gold-lt),var(--gold-dk));display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:12px;color:#050a12;text-align:center;padding:10px;box-shadow:0 0 40px rgba(201,162,39,.4);animation:nodeGlow 3s ease-in-out infinite;z-index:3}
+.hub-node::before{content:'';position:absolute;inset:-13px;border:1px dashed rgba(201,162,39,.35);border-radius:50%;animation:rotateSlow 22s linear infinite}
+.hub-node::after{content:'';position:absolute;inset:-26px;border:1px dashed rgba(201,162,39,.16);border-radius:50%;animation:rotateSlow 36s linear infinite reverse}
+.spoke{position:absolute;width:128px;transform:translate(-50%,-50%);background:var(--surface-1);border:1px solid rgba(148,163,184,.22);border-radius:var(--radius-sm);padding:10px 9px;text-align:center;transition:all .3s;cursor:pointer;z-index:2}
+.spoke:hover{border-color:var(--gold);transform:translate(-50%,-50%) scale(1.07);box-shadow:var(--shadow-md)}
+.spoke-name{font-size:10.5px;font-weight:700;color:#f1f5f9;margin-bottom:2px}
+.spoke-tag{font-size:8.5px;color:var(--text-2);letter-spacing:.6px;text-transform:uppercase}
+.hub-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.hub-svg line{stroke:rgba(201,162,39,.25);stroke-width:1;stroke-dasharray:4 5;animation:flowDash 2s linear infinite}
+.hub-pulse{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--gold-lt);box-shadow:0 0 9px var(--gold-lt);z-index:2;pointer-events:none}
+
+/* FIRMS TABLE */
+.firms-table{width:100%;border-collapse:collapse}
+.firms-table th{text-align:left;padding:11px 14px;font-size:9.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-3);border-bottom:1px solid var(--border-1)}
+.firms-table td{padding:14px 14px;font-size:12px;color:var(--text-2);border-bottom:1px solid rgba(148,163,184,.07);vertical-align:middle;transition:background .15s}
+.firms-table tr:hover td{background:rgba(201,162,39,.03)}
+.firm-rank{font-family:'DM Serif Display',serif;font-size:22px;color:var(--gold-lt)}
+.firm-name{font-weight:700;color:#f1f5f9;font-size:13px}
+.firm-sub{font-size:10px;color:var(--text-3);margin-top:2px}
+.firm-bar-wrap{background:rgba(148,163,184,.1);border-radius:4px;height:5px;width:100px;overflow:hidden;margin-top:5px}
+.firm-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold-dk),var(--gold-lt))}
+
+/* INDIA STATS */
+.india-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-bottom:28px}
+.india-kpi{background:var(--surface-1);border:1px solid var(--border-1);border-radius:var(--radius-md);padding:18px 16px;text-align:center;transition:all .25s;animation:fadeUp .5s ease both}
+.india-kpi:hover{border-color:rgba(251,146,60,.35);transform:translateY(-3px)}
+.india-val{font-family:'DM Serif Display',serif;font-size:22px;color:var(--amber);letter-spacing:-.02em}
+.india-lbl{font-size:9.5px;color:var(--text-3);margin-top:4px;text-transform:uppercase;letter-spacing:.8px}
+
+/* CASE CARD */
+.case-card{background:var(--surface-1);border:1px solid var(--border-1);border-radius:var(--radius-md);overflow:hidden;transition:all .25s;animation:scaleIn .5s ease both}
+.case-card:hover{border-color:var(--border-2);transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.case-header{padding:18px 20px 14px;border-bottom:1px solid var(--border-1)}
+.case-title{font-size:13.5px;font-weight:700;color:#f1f5f9;margin-bottom:6px}
+.case-desc{font-size:11.5px;color:var(--text-2);line-height:1.65;margin-bottom:12px}
+.case-m-val{font-family:'DM Serif Display',serif;font-size:18px;color:var(--gold-lt);letter-spacing:-.02em}
+.case-m-lbl{font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:.8px}
+.case-body{padding:14px 20px}
+.case-note{padding:10px 12px;background:rgba(201,162,39,.04);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;font-size:11px;color:var(--text-2);line-height:1.6}
+
+/* RADAR */
+.radar-wrap{position:relative;background:var(--surface-1);border:1px solid var(--border-2);border-radius:var(--radius-md);padding:22px;overflow:hidden}
+.radar-scan-bar{position:absolute;left:22px;right:22px;height:2px;background:linear-gradient(90deg,transparent,rgba(201,162,39,.32),transparent);pointer-events:none;animation:scanLine 4s linear infinite}
+.radar-tooltip{position:absolute;background:var(--navy-2);border:1px solid var(--border-2);border-radius:var(--radius-sm);padding:7px 12px;font-size:11px;color:#f1f5f9;pointer-events:none;opacity:0;transition:opacity .2s;z-index:10;white-space:nowrap}
+.radar-ctrl{display:flex;gap:6px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.radar-btn{padding:5px 13px;border-radius:20px;border:1px solid var(--border-1);background:transparent;color:var(--text-2);font-size:11px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s}
+.radar-btn.on{background:rgba(201,162,39,.12);border-color:var(--border-2);color:var(--gold-lt)}
+.radar-btn:hover:not(.on){border-color:rgba(148,163,184,.28);color:var(--text-1)}
+
+/* TOGGLE BUTTONS */
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.toggle-btn{padding:7px 16px;border-radius:20px;border:1px solid var(--border-1);background:transparent;color:var(--text-2);font-size:11.5px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s}
+.toggle-btn.on{background:rgba(201,162,39,.12);border-color:var(--border-2);color:var(--gold-lt)}
+.toggle-btn:hover:not(.on){border-color:rgba(148,163,184,.28);color:var(--text-1)}
+
+/* DS GRID */
+.ds-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px}
+.ds-card{background:var(--surface-1);border:1px solid var(--border-1);border-radius:var(--radius-sm);padding:16px;transition:all .28s;position:relative;overflow:hidden}
+.ds-card::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transition:left .55s}
+.ds-card:hover{transform:translateY(-3px);border-color:rgba(201,162,39,.4);box-shadow:var(--shadow-sm)}
+.ds-card:hover::before{left:100%}
+.ds-cat{font-size:8.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.ds-name{font-size:13px;font-weight:700;color:#f1f5f9;margin-bottom:3px}
+.ds-desc{font-size:10.5px;color:var(--text-2);line-height:1.55}
+
+/* DISCLAIMER */
+.disclaimer{margin-top:22px;padding:16px 20px;background:rgba(240,82,82,.05);border:1px solid rgba(240,82,82,.2);border-radius:var(--radius-sm);font-size:11.5px;color:var(--text-2);line-height:1.7}
+.disclaimer strong{color:var(--red);letter-spacing:.8px}
+
+/* FOOTER */
+.footer{background:#111827;border-top:1px solid var(--border-1);padding:28px 56px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:15px;color:var(--gold-lt)}
+.footer-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.footer-tag{padding:3px 10px;border:1px solid var(--border-1);border-radius:20px;font-size:9.5px;color:var(--text-3)}
+.footer-credit{font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;text-align:right}
+.footer-credit span{color:var(--gold);font-weight:700;letter-spacing:1px}
+
+/* ANIMATION DELAYS */
+.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+.d4{animation-delay:.24s}.d5{animation-delay:.30s}.d6{animation-delay:.36s}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--navy)}
+::-webkit-scrollbar-thumb{background:var(--navy-3);border-radius:2px}
+
+/* ENODE ANIMATION DELAYS */
+.enode:nth-child(1){animation-delay:0s}.enode:nth-child(2){animation-delay:.6s}
+.enode:nth-child(3){animation-delay:1.2s}.enode:nth-child(4){animation-delay:1.8s}
+.enode:nth-child(5){animation-delay:2.4s}.enode:nth-child(6){animation-delay:3s}
+.enode:nth-child(7){animation-delay:3.6s}.enode:nth-child(8){animation-delay:4.2s}
+
+@media(max-width:820px){
+  .hero-inner,.g2,.g3,.g4{flex-direction:column;display:flex}
+  .g2,.g3,.g4{display:grid;grid-template-columns:1fr}
+  .sec{padding:28px 20px}
+  .nav{padding:0 8px}
+  .flow-wrap{flex-direction:column}
+  .flow-step:not(:last-child)::after{display:none}
+  .flow-step:not(:last-child){border-radius:var(--radius-sm);margin-right:0;margin-bottom:8px;border-right:1px solid var(--border-1)}
+  .flow-step:first-child,.flow-step:last-child{border-radius:var(--radius-sm)}
+  .eflow{grid-template-columns:1fr 1fr;gap:14px}.eflow-svg{display:none}
+  .hub-flow{height:auto;padding:70px 12px 12px}
+  .spoke{position:relative;width:100%;transform:none;margin-bottom:8px;left:auto;top:auto}
+  .hub-node{position:relative;transform:none;margin:0 auto 18px;left:auto;top:auto}
+  .hub-svg{display:none}
+  .footer{flex-direction:column;padding:20px;text-align:center}
+  .footer-credit{text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- LAUNCH -->
+<div id="launch">
+  <div class="radar-sweep"></div>
+  <div class="globe-wrap">
+    <div class="globe-ring"></div><div class="globe-ring"></div><div class="globe-ring"></div>
+    <div class="globe-core">
+      <div class="globe-orbit"><div class="globe-dot"></div></div>
+      <div class="globe-chart">
+        <div class="globe-bar" style="height:45%"></div><div class="globe-bar"></div>
+        <div class="globe-bar"></div><div class="globe-bar"></div>
+        <div class="globe-bar"></div><div class="globe-bar"></div>
+      </div>
+    </div>
+  </div>
+  <div class="l-eyebrow">Global Capital Markets Intelligence 2026</div>
+  <div class="l-title">Investment <span class="acc">Banking</span></div>
+  <div class="l-sub">Intelligence Dashboard</div>
+  <div class="l-bar-wrap"><div class="l-bar" id="launch-bar"></div></div>
+  <div class="l-pct" id="launch-pct">Initialising analytics engine...</div>
+  <div class="l-credit">Designed &amp; Developed by <span>G Hari Charan</span></div>
+</div>
+
+<div id="main">
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Global Capital Markets Intelligence 2026</div>
+      <h1 class="hero-title">Investment <span class="gold-flow">Banking</span><br>Intelligence Dashboard</h1>
+      <p class="hero-sub">A structured guide to investment banking covering its meaning, history, divisions, deal processes, and the forces shaping capital markets in 2026. For students, professionals, recruiters, and business leaders.</p>
+      <div class="hero-credit">Designed &amp; Developed by G Hari Charan</div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card d1"><span class="stat-val">$3.8T</span><span class="stat-lbl">Global M&amp;A 2026E</span></div>
+      <div class="stat-card d2"><span class="stat-val">$94B</span><span class="stat-lbl">IB Revenue 2026E</span></div>
+      <div class="stat-card d3"><span class="stat-val">$18.2B</span><span class="stat-lbl">India IB 2026E</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- TICKER -->
+<div class="ticker"><div class="ticker-inner" id="ticker">
+  <div class="tick"><span class="sym">JPM</span>$218.44<span class="up">+1.8%</span></div>
+  <div class="tick"><span class="sym">GS</span>$498.12<span class="up">+2.1%</span></div>
+  <div class="tick"><span class="sym">MS</span>$112.88<span class="dn">-0.4%</span></div>
+  <div class="tick"><span class="sym">BAC</span>$41.22<span class="up">+0.9%</span></div>
+  <div class="tick"><span class="sym">NIFTY</span>25,842<span class="up">+0.6%</span></div>
+  <div class="tick"><span class="sym">SENSEX</span>84,210<span class="up">+0.5%</span></div>
+  <div class="tick"><span class="sym">SPX</span>5,924<span class="up">+0.7%</span></div>
+  <div class="tick"><span class="sym">GOLD</span>$2,412<span class="up">+0.8%</span></div>
+  <div class="tick"><span class="sym">BTC</span>$68,224<span class="up">+3.1%</span></div>
+  <div class="tick"><span class="sym">US10Y</span>4.38%<span class="dn">-2bps</span></div>
+  <div class="tick"><span class="sym">DAX</span>19,882<span class="up">+0.4%</span></div>
+  <div class="tick"><span class="sym">FTSE</span>8,642<span class="up">+0.3%</span></div>
+  <div class="tick"><span class="sym">JPM</span>$218.44<span class="up">+1.8%</span></div>
+  <div class="tick"><span class="sym">GS</span>$498.12<span class="up">+2.1%</span></div>
+  <div class="tick"><span class="sym">MS</span>$112.88<span class="dn">-0.4%</span></div>
+  <div class="tick"><span class="sym">BAC</span>$41.22<span class="up">+0.9%</span></div>
+  <div class="tick"><span class="sym">NIFTY</span>25,842<span class="up">+0.6%</span></div>
+  <div class="tick"><span class="sym">SENSEX</span>84,210<span class="up">+0.5%</span></div>
+  <div class="tick"><span class="sym">SPX</span>5,924<span class="up">+0.7%</span></div>
+  <div class="tick"><span class="sym">GOLD</span>$2,412<span class="up">+0.8%</span></div>
+  <div class="tick"><span class="sym">BTC</span>$68,224<span class="up">+3.1%</span></div>
+  <div class="tick"><span class="sym">US10Y</span>4.38%<span class="dn">-2bps</span></div>
+</div></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nav-btn act" onclick="ST('ov',this)">Overview</button>
+  <button class="nav-btn" onclick="ST('ev',this)">Evolution</button>
+  <button class="nav-btn" onclick="ST('ty',this)">Types</button>
+  <button class="nav-btn" onclick="ST('dv',this)">Divisions</button>
+  <button class="nav-btn" onclick="ST('pr',this)">Process</button>
+  <button class="nav-btn" onclick="ST('hw',this)">How It Works</button>
+  <button class="nav-btn" onclick="ST('an',this)">Analytics</button>
+  <button class="nav-btn" onclick="ST('mi',this)">Market Intelligence</button>
+  <button class="nav-btn" onclick="ST('rd',this)">Radar</button>
+  <button class="nav-btn" onclick="ST('fi',this)">Top Firms</button>
+  <button class="nav-btn" onclick="ST('in',this)">India View</button>
+  <button class="nav-btn" onclick="ST('cs',this)">Case Studies</button>
+  <button class="nav-btn" onclick="ST('esg',this)">ESG</button>
+  <button class="nav-btn" onclick="ST('ds',this)">References</button>
+  <button class="nav-btn" onclick="ST('gl',this)">Glossary</button>
+  <button class="nav-btn" onclick="ST('cn',this)">Conclusion</button>
+</nav>
+
+<!-- ══ OVERVIEW ══ -->
+<div class="tab act" id="tab-ov"><div class="sec">
+  <div class="sec-eyebrow">Chapter 01</div>
+  <div class="sec-title">What is Investment Banking?</div>
+  <div class="sec-sub">Investment banking connects companies and governments that need capital with investors who have it. Banks raise money, advise on mergers, and earn fees for expertise and execution.</div>
+
+  <div class="callout">
+    <div class="callout-mark">"</div>
+    <div class="callout-quote">An investment bank is a highly specialised financial matchmaker and advisor. When a company wants to list on a stock exchange, acquire a competitor, or borrow billions at the best rate, it hires an investment bank to design the transaction, find the investors, and execute with precision.</div>
+    <div class="callout-attr">Core Definition · Investment Banking 2026</div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">KEY METRICS 2026</div>
+  <div class="g4" style="margin-bottom:36px">
+    <div class="kpi d1"><div class="kpi-label">Global IB Revenue</div><div class="kpi-val">$94.2B</div><div class="kpi-badge up">+5.4% YoY</div><div class="kpi-note">Source: Dealogic and IMF estimates</div></div>
+    <div class="kpi d2"><div class="kpi-label">ECM Volume</div><div class="kpi-val">$1.4T</div><div class="kpi-badge up">+27.3%</div><div class="kpi-note">Equity Capital Markets, global</div></div>
+    <div class="kpi d3"><div class="kpi-label">DCM Volume</div><div class="kpi-val">$9.4T</div><div class="kpi-badge up">+8.0%</div><div class="kpi-note">Debt Capital Markets, global</div></div>
+    <div class="kpi d4"><div class="kpi-label">Global M&amp;A</div><div class="kpi-val">$3.8T</div><div class="kpi-badge up">+18.8%</div><div class="kpi-note">Announced deal value globally</div></div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">WHAT INVESTMENT BANKS DO</div>
+  <div class="g2" style="margin-bottom:36px">
+    <div class="insight d1">
+      <div class="insight-num">01</div>
+      <div class="insight-title">Raise Capital</div>
+      <div class="insight-desc">Help companies issue shares (IPOs) or bonds to raise money from investors. The bank finds buyers, sets the price, and manages the entire distribution process.</div>
+    </div>
+    <div class="insight d2">
+      <div class="insight-num">02</div>
+      <div class="insight-title">Advise on Mergers and Acquisitions</div>
+      <div class="insight-desc">Guide companies buying, selling, or merging with others. The bank values the target, negotiates terms, and manages the deal from first conversation to final close.</div>
+    </div>
+    <div class="insight d3">
+      <div class="insight-num">03</div>
+      <div class="insight-title">Trade Securities</div>
+      <div class="insight-desc">Buy and sell stocks, bonds, currencies, and derivatives for institutional clients. In 2026, approximately 72% of standardised equity trades are executed by algorithms.</div>
+    </div>
+    <div class="insight d4">
+      <div class="insight-num">04</div>
+      <div class="insight-title">Provide Research and Intelligence</div>
+      <div class="insight-desc">Publish independent analysis on companies and sectors. In 2026, generative AI surfaces deal opportunities 40 to 60% faster than traditional human research alone.</div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">REVENUE MIX AND DEAL VOLUME</div>
+  <div class="g2">
+    <div class="cbox">
+      <div class="cbox-title">Global IB Revenue by Division (2020 to 2026E)</div>
+      <div class="cbox-sub">USD Billions. How M&amp;A, ECM, DCM, and trading revenues shift each year. Illustrative.</div>
+      <div style="height:250px;position:relative"><canvas id="c-rev"></canvas></div>
+    </div>
+    <div class="cbox">
+      <div class="cbox-title">Deal Volume Mix 2026E</div>
+      <div class="cbox-sub">Share by product type. Debt markets lead at 31%, reflecting persistent corporate refinancing demand. Illustrative.</div>
+      <div style="height:250px;position:relative"><canvas id="c-pie"></canvas></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ EVOLUTION ══ -->
+<div class="tab" id="tab-ev"><div class="sec">
+  <div class="sec-eyebrow">Chapter 02</div>
+  <div class="sec-title">How Investment Banking Evolved</div>
+  <div class="sec-sub">From merchant trade finance in the 1600s to AI-powered deal origination in 2026. Four centuries of transformation in one connected timeline.</div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">HISTORICAL MILESTONES</div>
+  <div class="g2" style="margin-bottom:36px">
+    <div class="timeline">
+      <div class="tl-item d1"><div class="tl-year">1600s to 1700s</div><div class="tl-title">Merchant Banking Origins</div><div class="tl-desc">European merchant banks financed trade expeditions and issued government debt. Amsterdam and London became the first global financial hubs. The idea of earning a fee for arranging capital, rather than lending it directly, was established here.</div></div>
+      <div class="tl-item d2"><div class="tl-year">1838</div><div class="tl-title">American Investment Banking</div><div class="tl-desc">J.P. Morgan began financing America's railroad expansion by placing bonds with European investors. Investment banking emerged as a distinct profession built on relationships and advisory expertise, separate from deposit-taking commercial banks.</div></div>
+      <div class="tl-item d3"><div class="tl-year">1933</div><div class="tl-title">Glass-Steagall Act</div><div class="tl-desc">After the Great Depression, the US government mandated a strict separation between commercial banking and investment banking. This defined the industry structure for 66 years and created the modern model of specialised advisory firms.</div></div>
+      <div class="tl-item d4"><div class="tl-year">1970s to 1980s</div><div class="tl-title">The M&amp;A Wave and High-Yield Bonds</div><div class="tl-desc">Hostile takeovers, leveraged buyouts, and high-yield bonds transformed corporate America. Michael Milken pioneered junk bond financing. The first billion-dollar deals appeared and investment banking became enormously profitable.</div></div>
+      <div class="tl-item d5"><div class="tl-year">1999</div><div class="tl-title">Glass-Steagall Repealed</div><div class="tl-desc">The Gramm-Leach-Bliley Act abolished the separation between commercial and investment banking. Universal banking giants combined retail deposits with Wall Street deal-making, creating firms of unprecedented scale and product breadth.</div></div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item d1"><div class="tl-year">2008</div><div class="tl-title">The Global Financial Crisis</div><div class="tl-desc">Lehman Brothers collapsed on 15 September 2008, triggering the worst financial crisis since 1929. Excessive leverage and inadequate capital buffers were exposed. Dodd-Frank and Basel III permanently reshaped regulation globally.</div></div>
+      <div class="tl-item d2"><div class="tl-year">2021</div><div class="tl-title">Record Cycle at $89.4B Revenue</div><div class="tl-desc">Ultra-low interest rates and post-COVID optimism drove deal volumes to all-time highs. SPACs, technology mega-mergers, and private equity buyouts flooded the market simultaneously, generating record fee income across every division.</div></div>
+      <div class="tl-item d3"><div class="tl-year">2022 to 2023</div><div class="tl-title">Rate Shock and Slowdown</div><div class="tl-desc">The fastest interest-rate rise in 40 years froze deal pipelines globally. IB revenues fell 28% from their peak. Private credit funds expanded aggressively to fill the lending gap that higher bank funding costs created.</div></div>
+      <div class="tl-item d4"><div class="tl-year">2024 to 2026</div><div class="tl-title">Recovery and the AI Era</div><div class="tl-desc">Generative AI now drafts pitch books, analyses filings, and surfaces deal opportunities in minutes. India emerges as the world's third-largest IB market at $18.2B in fees. Global revenues approach the 2021 record, confirming a full cycle recovery.</div></div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">REVENUE HISTORY AND KEY RECORDS</div>
+  <div class="g2" style="margin-bottom:36px">
+    <div class="cbox">
+      <div class="cbox-title">IB Industry Revenue 1985 to 2026E (USD Billions)</div>
+      <div class="cbox-sub">Crisis dips and boom peaks illustrate how IB revenue follows economic cycles. Illustrative.</div>
+      <div style="height:200px;position:relative"><canvas id="c-hist"></canvas></div>
+    </div>
+    <div class="g2">
+      <div class="takeaway d1"><div class="takeaway-num">$232B</div><div class="takeaway-lbl">Largest M&amp;A Deal Ever</div><div class="takeaway-d">AOL and Time Warner, 2000</div></div>
+      <div class="takeaway d2"><div class="takeaway-num">$25.6B</div><div class="takeaway-lbl">Largest IPO Ever</div><div class="takeaway-d">Saudi Aramco, 2019</div></div>
+      <div class="takeaway d3"><div class="takeaway-num">60%</div><div class="takeaway-lbl">AI Diligence Speed Gain</div><div class="takeaway-d">Faster with generative AI in 2026</div></div>
+      <div class="takeaway d4"><div class="takeaway-num">$2.8T</div><div class="takeaway-lbl">Private Credit AUM</div><div class="takeaway-d">Now rivals traditional DCM</div></div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">ANIMATED MILESTONE FLOW</div>
+  <div class="eflow" id="eflow">
+    <svg class="eflow-svg" viewBox="0 0 1000 360" preserveAspectRatio="none">
+      <path class="glow-path" d="M110,60 C260,60 240,60 370,60 C500,60 460,180 610,180 C770,180 750,180 890,180 C890,295 480,295 110,295"/>
+      <path d="M110,60 C260,60 240,60 370,60"/><path d="M370,60 C500,60 460,180 610,180"/>
+      <path d="M610,180 C770,180 750,180 890,180"/><path d="M890,180 C890,265 680,295 490,295"/>
+      <path d="M490,295 C290,295 200,295 110,295"/>
+    </svg>
+    <div class="enode"><span class="enode-dot"></span><div class="enode-year">1600s</div><div class="enode-title">Merchant Origins</div><div class="enode-desc">Trade finance, Europe</div></div>
+    <div class="enode"><span class="enode-dot"></span><div class="enode-year">1838</div><div class="enode-title">American IB</div><div class="enode-desc">J.P. Morgan and railroads</div></div>
+    <div class="enode"><span class="enode-dot"></span><div class="enode-year">1933</div><div class="enode-title">Glass-Steagall</div><div class="enode-desc">Commercial and IB split</div></div>
+    <div class="enode"><span class="enode-dot"></span><div class="enode-year">1980s</div><div class="enode-title">LBO and Junk Bonds</div><div class="enode-desc">Milken era mega-deals</div></div>
+    <div class="enode"><span class="enode-dot"></span><div class="enode-year">1999</div><div class="enode-title">Universal Banking</div><div class="enode-desc">Financial supermarkets</div></div>
+    <div class="enode"><span class="enode-dot"></span><div class="enode-year">2008</div><div class="enode-title">GFC Reset</div><div class="enode-desc">Dodd-Frank reshapes rules</div></div>
+    <div class="enode"><span class="enode-dot"></span><div class="enode-year">2021</div><div class="enode-title">Peak Cycle</div><div class="enode-desc">$89.4B record revenue</div></div>
+    <div class="enode"><span class="enode-dot"></span><div class="enode-year">2026</div><div class="enode-title">AI Era</div><div class="enode-desc">AI and India's rise</div></div>
+  </div>
+</div></div>
+
+<!-- ══ TYPES ══ -->
+<div class="tab" id="tab-ty"><div class="sec">
+  <div class="sec-eyebrow">Chapter 03</div>
+  <div class="sec-title">Types of Investment Banking</div>
+  <div class="sec-sub">Eight core specialisations, each serving a distinct client need and generating a different fee structure. Understanding each type is the foundation for understanding the industry.</div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">THE EIGHT SPECIALISATIONS</div>
+  <div class="g2" style="margin-bottom:36px">
+    <div class="insight d1">
+      <div class="insight-num">01</div>
+      <div class="insight-title">Mergers and Acquisitions</div>
+      <div class="insight-desc">Advises companies buying or selling other businesses. The bank values the target, negotiates the price, and manages the full transaction process. Global M&amp;A market estimated at $3.8T in 2026.</div>
+    </div>
+    <div class="insight blue d2">
+      <div class="insight-num">02</div>
+      <div class="insight-title">Equity Capital Markets (ECM)</div>
+      <div class="insight-desc">Manages stock listings including IPOs, follow-on offerings, and rights issues. The bank builds the order book, sets the price, and distributes shares. Estimated at $1.4T globally in 2026.</div>
+    </div>
+    <div class="insight rec d3">
+      <div class="insight-num">03</div>
+      <div class="insight-title">Debt Capital Markets (DCM)</div>
+      <div class="insight-desc">Helps companies and governments raise money by issuing bonds and notes. The largest IB product by volume at an estimated $9.4T in 2026. Banks structure terms and place securities with institutional investors.</div>
+    </div>
+    <div class="insight purple d4">
+      <div class="insight-num">04</div>
+      <div class="insight-title">Sales and Trading</div>
+      <div class="insight-desc">Buys and sells securities on behalf of institutional clients, including stocks, bonds, currencies, and derivatives. Approximately 72% of equity trades are now algorithm-executed in 2026.</div>
+    </div>
+    <div class="insight risk d5">
+      <div class="insight-num">05</div>
+      <div class="insight-title">Leveraged Finance</div>
+      <div class="insight-desc">Arranges high-yield debt for private equity buyouts and leveraged recapitalisations. Banks commit capital upfront and distribute to investors. Estimated at $812B and recovering in 2026.</div>
+    </div>
+    <div class="insight amber d6">
+      <div class="insight-num">06</div>
+      <div class="insight-title">Restructuring</div>
+      <div class="insight-desc">Advises financially distressed companies and their creditors. Restructuring bankers design turnaround plans. Revenue rises during economic downturns, making this a counter-cyclical business.</div>
+    </div>
+    <div class="insight teal">
+      <div class="insight-num">07</div>
+      <div class="insight-title">Private Credit</div>
+      <div class="insight-desc">The fastest-growing investment banking product in 2026. Banks partner with private credit funds to lend directly to mid-market companies, bypassing public bond markets. Global AUM exceeds $2.8T.</div>
+    </div>
+    <div class="insight blue">
+      <div class="insight-num">08</div>
+      <div class="insight-title">Project Finance</div>
+      <div class="insight-desc">Raises long-term debt for infrastructure projects including highways, power plants, and renewable energy. Repayment comes from the project's own cash flows. India's National Infrastructure Pipeline drives substantial volumes.</div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">REVENUE BY DIVISION AND CONSTELLATION VIEW</div>
+  <div class="cbox" style="margin-bottom:24px">
+    <div class="cbox-title">Revenue by Division — Top 5 Global Banks (2026E)</div>
+    <div class="cbox-sub">Percentage of total IB revenue by business line. Illustrative.</div>
+    <div style="height:240px;position:relative"><canvas id="c-div"></canvas></div>
+  </div>
+  <div class="hub-flow" id="tflow">
+    <svg class="hub-svg" id="tflow-svg"></svg>
+    <div class="hub-node">Investment<br>Banking</div>
+    <div class="spoke" style="top:11%;left:50%"><div class="spoke-name">M&amp;A</div><div class="spoke-tag">Advisory</div></div>
+    <div class="spoke" style="top:25%;left:82%"><div class="spoke-name">ECM</div><div class="spoke-tag">Equity</div></div>
+    <div class="spoke" style="top:60%;left:88%"><div class="spoke-name">DCM</div><div class="spoke-tag">Debt</div></div>
+    <div class="spoke" style="top:86%;left:70%"><div class="spoke-name">Sales and Trading</div><div class="spoke-tag">Markets</div></div>
+    <div class="spoke" style="top:88%;left:30%"><div class="spoke-name">LevFin</div><div class="spoke-tag">Leveraged</div></div>
+    <div class="spoke" style="top:60%;left:12%"><div class="spoke-name">Restructuring</div><div class="spoke-tag">Distressed</div></div>
+    <div class="spoke" style="top:25%;left:18%"><div class="spoke-name">Private Credit</div><div class="spoke-tag">Fastest Growing</div></div>
+    <div class="spoke" style="top:8%;left:14%"><div class="spoke-name">Project Finance</div><div class="spoke-tag">Infrastructure</div></div>
+  </div>
+</div></div>
+
+<!-- ══ DIVISIONS ══ -->
+<div class="tab" id="tab-dv"><div class="sec">
+  <div class="sec-eyebrow">Chapter 04</div>
+  <div class="sec-title">Investment Banking Divisions</div>
+  <div class="sec-sub">Inside a modern investment bank, work is organised into specialised divisions. Understanding how they operate, interact, and generate revenue is fundamental to understanding the industry.</div>
+
+  <div class="callout">
+    <div class="callout-mark">"</div>
+    <div class="callout-quote">A large investment bank is not one business. It is a collection of specialised divisions, each with its own clients, products, risk profile, and career path, all operating under a shared balance sheet and brand.</div>
+    <div class="callout-attr">Structural Note · Investment Banking Organisation 2026</div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">THE THREE CORE DIVISIONS</div>
+  <div class="g3" style="margin-bottom:36px">
+    <div class="insight d1">
+      <div class="insight-num">01</div>
+      <div class="insight-title">Investment Banking Division (IBD)</div>
+      <div class="insight-desc">IBD is the advisory and origination engine, split into two groups. Coverage groups focus on industries such as technology, healthcare, and energy, owning long-term client relationships. Product groups such as M&amp;A, ECM, and DCM provide execution expertise across all industries. Coverage wins the client; product executes the deal. In India, IBD teams are concentrated in Mumbai with growing technology coverage in Bengaluru.</div>
+    </div>
+    <div class="insight blue d2">
+      <div class="insight-num">02</div>
+      <div class="insight-title">Global Markets Division</div>
+      <div class="insight-desc">Global Markets encompasses Sales, Trading, and Research. Sales teams present ideas and execute orders for pension funds, hedge funds, and sovereign wealth funds. Trading desks make markets in equities, fixed income, currencies, and commodities. Research publishes independent analysis. In 2026, algorithms handle most standardised flow while human traders focus on complex block transactions.</div>
+    </div>
+    <div class="insight rec d3">
+      <div class="insight-num">03</div>
+      <div class="insight-title">Asset Management Division</div>
+      <div class="insight-desc">Manages money on behalf of institutional investors and high-net-worth individuals. Revenue comes from management fees of 0.3 to 1% of assets under management, plus performance fees for outperforming benchmarks. Provides stable recurring income that offsets the cyclicality of deal-driven businesses. In India, HDFC AMC and ICICI Prudential AMC sit alongside their parent banks' capital markets businesses.</div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">DIVISION REVENUE SPLIT AND CAREER STRUCTURE</div>
+  <div class="g2" style="margin-bottom:36px">
+    <div class="card">
+      <div class="kpi-label" style="margin-bottom:16px">Division Revenue Split (Illustrative 2026E)</div>
+      <div class="prog-row">
+        <div class="prog-label-row"><span class="prog-label">IBD (Advisory, ECM, DCM)</span><span class="prog-val">42%</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:42%"></div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-label-row"><span class="prog-label">Global Markets (Sales and Trading)</span><span class="prog-val" style="color:var(--blue-lt)">36%</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:36%;background:linear-gradient(90deg,var(--blue),var(--blue-lt))"></div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-label-row"><span class="prog-label">Asset Management</span><span class="prog-val" style="color:var(--green)">14%</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:14%;background:linear-gradient(90deg,#0f7a45,var(--green))"></div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-label-row"><span class="prog-label">Private Credit and Other</span><span class="prog-val" style="color:var(--purple)">8%</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:8%;background:linear-gradient(90deg,#5e3d8f,var(--purple))"></div></div>
+      </div>
+      <p style="font-size:11px;color:var(--text-3);margin-top:14px;line-height:1.6">Splits vary by bank. Goldman Sachs and JPMorgan earn a larger proportion from Global Markets. Boutique advisory firms earn exclusively from IBD. Illustrative.</p>
+    </div>
+    <div class="card">
+      <div class="kpi-label" style="margin-bottom:16px">Career Ladder</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:flex-start;gap:12px"><div style="width:3px;min-height:32px;background:var(--gold);border-radius:2px;flex-shrink:0;margin-top:2px"></div><div><div style="font-size:12px;font-weight:700;color:#f1f5f9">Analyst (Years 1 to 3)</div><div style="font-size:11px;color:var(--text-2);margin-top:3px">Builds financial models, prepares pitch books, and compiles research across multiple live deals under close supervision.</div></div></div>
+        <div style="display:flex;align-items:flex-start;gap:12px"><div style="width:3px;min-height:32px;background:var(--blue-lt);border-radius:2px;flex-shrink:0;margin-top:2px"></div><div><div style="font-size:12px;font-weight:700;color:#f1f5f9">Associate (Years 3 to 5)</div><div style="font-size:11px;color:var(--text-2);margin-top:3px">Manages analysts, owns the financial model, and begins developing client relationships. Often from MBA programmes.</div></div></div>
+        <div style="display:flex;align-items:flex-start;gap:12px"><div style="width:3px;min-height:32px;background:var(--green);border-radius:2px;flex-shrink:0;margin-top:2px"></div><div><div style="font-size:12px;font-weight:700;color:#f1f5f9">Vice President (Years 5 to 8)</div><div style="font-size:11px;color:var(--text-2);margin-top:3px">Manages day-to-day deal execution. Develops independent coverage of mid-level corporate contacts.</div></div></div>
+        <div style="display:flex;align-items:flex-start;gap:12px"><div style="width:3px;min-height:32px;background:var(--purple);border-radius:2px;flex-shrink:0;margin-top:2px"></div><div><div style="font-size:12px;font-weight:700;color:#f1f5f9">Director / Executive Director (Years 8 to 12)</div><div style="font-size:11px;color:var(--text-2);margin-top:3px">Builds and maintains senior corporate client relationships. Bridges the analytical team with senior rainmakers.</div></div></div>
+        <div style="display:flex;align-items:flex-start;gap:12px"><div style="width:3px;min-height:32px;background:var(--amber);border-radius:2px;flex-shrink:0;margin-top:2px"></div><div><div style="font-size:12px;font-weight:700;color:#f1f5f9">Managing Director (Year 12+)</div><div style="font-size:11px;color:var(--text-2);margin-top:3px">Owns senior client relationships and is accountable for mandate origination. Compensation is heavily tied to revenue generated.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">KEY STRUCTURAL CONCEPTS</div>
+  <div class="g2">
+    <div class="insight d1">
+      <div class="insight-num">A</div>
+      <div class="insight-title">The Chinese Wall</div>
+      <div class="insight-desc">A mandatory information barrier between IBD (which holds client secrets) and Global Markets (which trades securities). An IBD banker advising on an acquisition holds material non-public information. Sharing it with a trader would constitute insider trading, a criminal offence. SEBI, the SEC, and IOSCO all mandate these controls with severe penalties for violations.</div>
+    </div>
+    <div class="insight blue d2">
+      <div class="insight-num">B</div>
+      <div class="insight-title">Bulge Bracket vs. Boutique</div>
+      <div class="insight-desc">Bulge bracket banks such as JPMorgan, Goldman Sachs, and Morgan Stanley offer the full spectrum across IBD, Global Markets, and Asset Management with global distribution and balance sheet strength. Boutique advisory firms such as Lazard, Evercore, Avendus, and JM Financial focus exclusively on advisory with no trading conflicts, winning mandates through independent, conflict-free counsel on the most sensitive strategic transactions.</div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ PROCESS ══ -->
+<div class="tab" id="tab-pr"><div class="sec">
+  <div class="sec-eyebrow">Chapter 05</div>
+  <div class="sec-title">The Deal Process</div>
+  <div class="sec-sub">How investment banks take a transaction from first conversation to final close. Every phase has a defined purpose, a dedicated team, and specific deliverables that move the deal forward.</div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">M&amp;A FULL LIFECYCLE</div>
+  <div class="flow-wrap" style="margin-bottom:36px">
+    <div class="flow-step d1"><div class="flow-bar"></div><div class="flow-num">01</div><div class="flow-title">Origination</div><div class="flow-desc">AI screens companies for deal candidates. Bankers build pitch books with strategic rationale and preliminary valuation.</div></div>
+    <div class="flow-step d2"><div class="flow-bar"></div><div class="flow-num">02</div><div class="flow-title">Mandate Win</div><div class="flow-desc">Client signs the engagement letter. Fee structure agreed. Deal team assembled across all seniority levels.</div></div>
+    <div class="flow-step d3"><div class="flow-bar"></div><div class="flow-num">03</div><div class="flow-title">Valuation</div><div class="flow-desc">Analysts build DCF, comparable companies, and precedent transaction models. Their overlap defines the fair value range.</div></div>
+    <div class="flow-step d4"><div class="flow-bar"></div><div class="flow-num">04</div><div class="flow-title">CIM and Process</div><div class="flow-desc">A Confidential Information Memorandum is sent to qualified buyers after non-disclosure agreements are signed.</div></div>
+    <div class="flow-step d5"><div class="flow-bar"></div><div class="flow-num">05</div><div class="flow-title">Due Diligence</div><div class="flow-desc">Legal, financial, tax, and ESG due diligence is conducted through a virtual data room. AI tools reduce timelines by 40% in 2026.</div></div>
+    <div class="flow-step d6"><div class="flow-bar"></div><div class="flow-num">06</div><div class="flow-title">Negotiation</div><div class="flow-desc">Final price, payment structure, representations, and warranties are negotiated. Both parties sign a definitive agreement.</div></div>
+    <div class="flow-step"><div class="flow-bar"></div><div class="flow-num">07</div><div class="flow-title">Close</div><div class="flow-desc">Regulatory approvals obtained. Financing drawn down. Transaction closes and the bank collects its success fee.</div></div>
+  </div>
+
+  <div class="sec-label" style="color:var(--blue-lt)">IPO UNDERWRITING PROCESS</div>
+  <div class="flow-wrap" style="margin-bottom:36px">
+    <div class="flow-step d1"><div class="flow-bar"></div><div class="flow-num">01</div><div class="flow-title">Bank Selection</div><div class="flow-desc">Company runs a bake-off. One lead bookrunner and co-managers are selected on credentials, distribution, and fee proposals.</div></div>
+    <div class="flow-step d2"><div class="flow-bar"></div><div class="flow-num">02</div><div class="flow-title">Due Diligence</div><div class="flow-desc">Three to five years of audited financials reviewed. Legal risks documented. Prospectus draft begins in parallel.</div></div>
+    <div class="flow-step d3"><div class="flow-bar"></div><div class="flow-num">03</div><div class="flow-title">Regulatory Filing</div><div class="flow-desc">S-1 (US) or DRHP (India) filed with the regulator. Full disclosure of business, financials, risks, and use of proceeds is mandatory.</div></div>
+    <div class="flow-step d4"><div class="flow-bar"></div><div class="flow-num">04</div><div class="flow-title">Roadshow</div><div class="flow-desc">Management presents to institutional investors over 10 to 14 days. Digital roadshows are now standard, expanding investor reach.</div></div>
+    <div class="flow-step d5"><div class="flow-bar"></div><div class="flow-num">05</div><div class="flow-title">Pricing</div><div class="flow-desc">Final price set based on order book demand. Allocations prioritise long-term institutional holders over short-term traders.</div></div>
+    <div class="flow-step d6"><div class="flow-bar"></div><div class="flow-num">06</div><div class="flow-title">Listing Day</div><div class="flow-desc">Shares trade for the first time. Trading desk stabilises price for up to 30 days. Gross fees of 5 to 7% (US) or 2 to 3% (India) collected.</div></div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">VALUATION METHODS</div>
+  <div class="g2">
+    <div class="cbox">
+      <div class="cbox-title">Valuation Football Field — Illustrative Mid-Cap Target (USD Millions)</div>
+      <div class="cbox-sub">Each method produces a different range. The zone of overlap typically defines the fair negotiation range. Illustrative.</div>
+      <div style="height:240px;position:relative"><canvas id="c-val"></canvas></div>
+    </div>
+    <div class="g2">
+      <div class="insight d1">
+        <div class="insight-num">DCF</div>
+        <div class="insight-title">Discounted Cash Flow</div>
+        <div class="insight-desc">Projects future free cash flows and discounts them to today using WACC. Most fundamental but most assumption-sensitive method.</div>
+      </div>
+      <div class="insight blue d2">
+        <div class="insight-num">CCA</div>
+        <div class="insight-title">Comparable Companies</div>
+        <div class="insight-desc">Values the business using multiples (EV/EBITDA, P/E) from similar publicly listed peers. Quick and market-anchored.</div>
+      </div>
+      <div class="insight rec d3">
+        <div class="insight-num">PTX</div>
+        <div class="insight-title">Precedent Transactions</div>
+        <div class="insight-desc">Uses multiples paid in past M&amp;A deals for similar companies. Typically the highest value because it includes a control premium.</div>
+      </div>
+      <div class="insight purple d4">
+        <div class="insight-num">LBO</div>
+        <div class="insight-title">LBO Analysis</div>
+        <div class="insight-desc">Models what a private equity buyer could pay based on the ability to service acquisition debt and achieve a target IRR of 20%+.</div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ HOW IT WORKS ══ -->
+<div class="tab" id="tab-hw"><div class="sec">
+  <div class="sec-eyebrow">Chapter 06</div>
+  <div class="sec-title">How Investment Banking Works</div>
+  <div class="sec-sub">The mechanics behind advisory, underwriting, and capital markets explained clearly for professionals at every level of familiarity with the industry.</div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">THE THREE CORE MECHANICS</div>
+  <div class="g3" style="margin-bottom:36px">
+    <div class="insight d1">
+      <div class="insight-num">01</div>
+      <div class="insight-title">The Advisory Business</div>
+      <div class="insight-desc">Investment banks sell expertise and relationships. A senior banker may spend years cultivating a relationship with a CEO before winning a mandate. The business has no physical products. Its entire value lies in intellectual capital and a reputation for completing difficult transactions. AI handles analytical groundwork in 2026, but senior judgment and client trust still determine who wins the mandate.</div>
+    </div>
+    <div class="insight blue d2">
+      <div class="insight-num">02</div>
+      <div class="insight-title">How Underwriting Works</div>
+      <div class="insight-desc">When underwriting, the bank commits to purchasing securities from the issuer at a fixed price, then sells them to investors. The bank bears the risk that markets deteriorate in between. This price certainty is valuable to corporate issuers. The difference between the guaranteed price and the distribution price, known as the gross spread, compensates the bank for the risk it has assumed.</div>
+    </div>
+    <div class="insight rec d3">
+      <div class="insight-num">03</div>
+      <div class="insight-title">Capital Markets in 2026</div>
+      <div class="insight-desc">Investment banks operate across primary markets (new security issuances) and secondary markets (ongoing trading of existing securities). Tokenised bonds settled on distributed ledgers have added a third dimension in 2026. Private credit has grown to $2.8T in global AUM and now competes directly with bond markets for mid-market corporate lending, reshaping how fee pools are distributed.</div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">THE SIX-STAGE CAPITAL FLOW</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;margin-bottom:36px">
+    <div style="background:var(--surface-1);border:1px solid var(--border-1);border-radius:var(--radius-sm) 0 0 var(--radius-sm);padding:20px 14px;text-align:center;transition:all .25s" onmouseenter="this.style.background='rgba(201,162,39,.06)';this.style.borderColor='rgba(201,162,39,.35)';this.style.transform='translateY(-3px)'" onmouseleave="this.style.background='';this.style.borderColor='';this.style.transform=''"><div style="width:32px;height:32px;border-radius:50%;background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.28);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gold);margin:0 auto 10px;font-family:'DM Serif Display',serif">1</div><div style="font-size:12px;font-weight:700;color:#f1f5f9;margin-bottom:5px">Client Need</div><div style="font-size:10.5px;color:var(--text-3);line-height:1.5">Company identifies a capital or strategic need. Bank pitches proactively.</div></div>
+    <div style="background:var(--surface-1);border:1px solid var(--border-1);border-left:none;padding:20px 14px;text-align:center;transition:all .25s" onmouseenter="this.style.background='rgba(201,162,39,.06)';this.style.borderColor='rgba(201,162,39,.35)';this.style.transform='translateY(-3px)'" onmouseleave="this.style.background='';this.style.borderColor='';this.style.transform=''"><div style="width:32px;height:32px;border-radius:50%;background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.28);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gold);margin:0 auto 10px;font-family:'DM Serif Display',serif">2</div><div style="font-size:12px;font-weight:700;color:#f1f5f9;margin-bottom:5px">Structure</div><div style="font-size:10.5px;color:var(--text-3);line-height:1.5">Bank models equity, debt, hybrid, and private credit options.</div></div>
+    <div style="background:var(--surface-1);border:1px solid var(--border-1);border-left:none;padding:20px 14px;text-align:center;transition:all .25s" onmouseenter="this.style.background='rgba(201,162,39,.06)';this.style.borderColor='rgba(201,162,39,.35)';this.style.transform='translateY(-3px)'" onmouseleave="this.style.background='';this.style.borderColor='';this.style.transform=''"><div style="width:32px;height:32px;border-radius:50%;background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.28);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gold);margin:0 auto 10px;font-family:'DM Serif Display',serif">3</div><div style="font-size:12px;font-weight:700;color:#f1f5f9;margin-bottom:5px">Underwrite</div><div style="font-size:10.5px;color:var(--text-3);line-height:1.5">Bank commits capital at a fixed price, assuming market risk.</div></div>
+    <div style="background:var(--surface-1);border:1px solid var(--border-1);border-left:none;padding:20px 14px;text-align:center;transition:all .25s" onmouseenter="this.style.background='rgba(201,162,39,.06)';this.style.borderColor='rgba(201,162,39,.35)';this.style.transform='translateY(-3px)'" onmouseleave="this.style.background='';this.style.borderColor='';this.style.transform=''"><div style="width:32px;height:32px;border-radius:50%;background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.28);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gold);margin:0 auto 10px;font-family:'DM Serif Display',serif">4</div><div style="font-size:12px;font-weight:700;color:#f1f5f9;margin-bottom:5px">Market</div><div style="font-size:10.5px;color:var(--text-3);line-height:1.5">Sales teams present to pension funds, sovereign wealth funds, and asset managers.</div></div>
+    <div style="background:var(--surface-1);border:1px solid var(--border-1);border-left:none;padding:20px 14px;text-align:center;transition:all .25s" onmouseenter="this.style.background='rgba(201,162,39,.06)';this.style.borderColor='rgba(201,162,39,.35)';this.style.transform='translateY(-3px)'" onmouseleave="this.style.background='';this.style.borderColor='';this.style.transform=''"><div style="width:32px;height:32px;border-radius:50%;background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.28);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gold);margin:0 auto 10px;font-family:'DM Serif Display',serif">5</div><div style="font-size:12px;font-weight:700;color:#f1f5f9;margin-bottom:5px">Place</div><div style="font-size:10.5px;color:var(--text-3);line-height:1.5">Allocations finalised. Securities distributed. Client receives proceeds net of fees.</div></div>
+    <div style="background:var(--surface-1);border:1px solid var(--border-1);border-left:none;border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:20px 14px;text-align:center;transition:all .25s" onmouseenter="this.style.background='rgba(201,162,39,.06)';this.style.borderColor='rgba(201,162,39,.35)';this.style.transform='translateY(-3px)'" onmouseleave="this.style.background='';this.style.borderColor='';this.style.transform=''"><div style="width:32px;height:32px;border-radius:50%;background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.28);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gold);margin:0 auto 10px;font-family:'DM Serif Display',serif">6</div><div style="font-size:12px;font-weight:700;color:#f1f5f9;margin-bottom:5px">Support</div><div style="font-size:10.5px;color:var(--text-3);line-height:1.5">Trading desk stabilises price. Research initiates coverage. AI monitors for next opportunity.</div></div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">REVENUE MODEL AND KEY DRIVERS</div>
+  <div class="g2">
+    <div class="cbox">
+      <div class="cbox-title">IB Revenue Model Breakdown (2026E)</div>
+      <div class="cbox-sub">How investment banks earn money across business lines. Illustrative.</div>
+      <div style="height:220px;position:relative"><canvas id="c-rmod"></canvas></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="insight d1"><div class="insight-num">01</div><div class="insight-title">AI-Augmented Origination</div><div class="insight-desc">Large language models scan regulatory filings, earnings calls, and news to surface deal opportunities approximately 60% faster than traditional human research processes.</div></div>
+      <div class="insight blue d2"><div class="insight-num">02</div><div class="insight-title">League Table Rankings</div><div class="insight-desc">Bloomberg and Refinitiv publish quarterly rankings. A strong position is essential for winning competitive mandates and recruiting senior bankers across all markets.</div></div>
+      <div class="insight rec d3"><div class="insight-num">03</div><div class="insight-title">ESG as a Transaction Gating Criterion</div><div class="insight-desc">Every transaction above approximately $500M now requires a formal ESG assessment. Institutional investors reject mandates that fail minimum sustainability thresholds at their investment committees.</div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ ANALYTICS ══ -->
+<div class="tab" id="tab-an"><div class="sec">
+  <div class="sec-eyebrow">Chapter 07</div>
+  <div class="sec-title">Market Analytics</div>
+  <div class="sec-sub">Quantitative analysis through 2026 covering global deal dynamics, regional growth shifts, and sector activity. All charts use illustrative data derived from industry sources.</div>
+
+  <div class="toggle-row">
+    <button class="toggle-btn on" onclick="switchAn('global',this)">Global Markets</button>
+    <button class="toggle-btn" onclick="switchAn('regional',this)">Regional Breakdown</button>
+    <button class="toggle-btn" onclick="switchAn('sector',this)">Sector Activity</button>
+  </div>
+
+  <div id="an-global">
+    <div class="sec-label" style="color:var(--gold-lt)">GLOBAL DEAL VOLUME AND IPO ACTIVITY</div>
+    <div class="g2" style="margin-bottom:24px">
+      <div class="cbox"><div class="cbox-title">Global M&amp;A Volume 2010 to 2026E</div><div class="cbox-sub">Announced deal value in USD Trillions. The 2021 peak reached $5.9T before rate-driven slowdown. Illustrative.</div><div style="height:220px;position:relative"><canvas id="c-mna"></canvas></div></div>
+      <div class="cbox"><div class="cbox-title">Global IPO Market 2015 to 2026E</div><div class="cbox-sub">IPO count (left axis) and gross proceeds in USD Billions (right axis, dashed line). Illustrative.</div><div style="height:220px;position:relative"><canvas id="c-ipo"></canvas></div></div>
+    </div>
+    <div class="sec-label" style="color:var(--gold-lt)">BANK REVENUE COMPARISON</div>
+    <div class="cbox"><div class="cbox-title">IB Revenue Comparison — Top 8 Banks, 2025 vs 2026E (USD Billions)</div><div class="cbox-sub">Grey bars represent 2025 reported figures. Gold bars represent 2026 estimates. Illustrative, based on public filings and industry estimates.</div><div style="height:240px;position:relative"><canvas id="c-banks"></canvas></div></div>
+  </div>
+  <div id="an-regional" style="display:none">
+    <div class="sec-label" style="color:var(--gold-lt)">REGIONAL DEAL FLOW AND EMERGING MARKET GROWTH</div>
+    <div class="g2">
+      <div class="cbox"><div class="cbox-title">Deal Volume by Region 2026E</div><div class="cbox-sub">Share of global M&amp;A. India is now a standalone category at approximately 8%, separate from broader Asia Pacific. Illustrative.</div><div style="height:250px;position:relative"><canvas id="c-reg"></canvas></div></div>
+      <div class="cbox"><div class="cbox-title">Emerging Markets IB Revenue 2018 to 2026E</div><div class="cbox-sub">IB fee revenue in USD Billions. India has overtaken China in year-on-year fee growth since 2022. Illustrative.</div><div style="height:250px;position:relative"><canvas id="c-em"></canvas></div></div>
+    </div>
+  </div>
+  <div id="an-sector" style="display:none">
+    <div class="sec-label" style="color:var(--gold-lt)">SECTOR M&amp;A ACTIVITY</div>
+    <div class="g2">
+      <div class="cbox"><div class="cbox-title">M&amp;A Activity by Sector 2026E (USD Billions)</div><div class="cbox-sub">Technology and AI leads at an estimated $1.1T, driven by large-scale platform acquisitions. Illustrative.</div><div style="height:250px;position:relative"><canvas id="c-sec"></canvas></div></div>
+      <div class="cbox"><div class="cbox-title">Technology M&amp;A and AI Subset 2019 to 2026E</div><div class="cbox-sub">Total technology M&amp;A (solid blue) versus the AI-related subset (dashed gold). AI deals are growing faster than overall tech activity. Illustrative.</div><div style="height:250px;position:relative"><canvas id="c-tech"></canvas></div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ MARKET INTELLIGENCE ══ -->
+<div class="tab" id="tab-mi"><div class="sec">
+  <div class="sec-eyebrow">Chapter 08</div>
+  <div class="sec-title">Market Intelligence</div>
+  <div class="sec-sub">The systematic process of collecting and interpreting information about markets, clients, and economic conditions. In investment banking, it drives deal origination, pricing, and risk management.</div>
+
+  <div class="callout">
+    <div class="callout-mark">"</div>
+    <div class="callout-quote">The bank that knows the most about a client, an industry, or a market shift before its competitors will originate the mandate, set the terms, and lead the transaction. Market intelligence is the source of that edge.</div>
+    <div class="callout-attr">Market Intelligence in Practice · 2026</div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">THE FOUR DOMAINS OF MARKET INTELLIGENCE</div>
+  <div class="g2" style="margin-bottom:36px">
+    <div class="insight d1">
+      <div class="insight-num">01</div>
+      <div class="insight-title">Macroeconomic Intelligence</div>
+      <div class="insight-desc">Tracks interest rates, GDP growth, inflation, and currency movements. These variables directly affect the cost of financing and corporate appetite for deals. RBI rate decisions, for example, reshape the entire Indian DCM pipeline within days of announcement.</div>
+    </div>
+    <div class="insight blue d2">
+      <div class="insight-num">02</div>
+      <div class="insight-title">Industry Intelligence</div>
+      <div class="insight-desc">Monitors competitive dynamics, regulatory changes, and technological disruption within specific sectors. A regulatory shift in India's telecom sector, for example, can simultaneously trigger multiple M&amp;A advisory and financing mandates.</div>
+    </div>
+    <div class="insight rec d3">
+      <div class="insight-num">03</div>
+      <div class="insight-title">Company Intelligence</div>
+      <div class="insight-desc">Analyses corporate strategies, balance sheet signals, and management commentary to identify which companies are likely buyers, sellers, or issuers in the next 12 to 24 months. This is the most proprietary and valuable form of intelligence.</div>
+    </div>
+    <div class="insight purple d4">
+      <div class="insight-num">04</div>
+      <div class="insight-title">Transaction Intelligence</div>
+      <div class="insight-desc">Tracks recent deal structures, pricing levels, and investor reception across comparable transactions. Directly informs the structuring and pricing decisions on every live mandate being executed by the bank.</div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">LIVE MACRO SIGNALS (2026)</div>
+  <div class="g4" style="margin-bottom:36px">
+    <div class="kpi d1"><div class="kpi-label">US Federal Funds Rate</div><div class="kpi-val">4.25%</div><div class="kpi-badge up">Stabilising</div><div class="kpi-note">Rate stability in 2026 is the primary driver of global M&amp;A recovery.</div></div>
+    <div class="kpi d2"><div class="kpi-label">RBI Repo Rate</div><div class="kpi-val">6.00%</div><div class="kpi-badge up">Easing Cycle</div><div class="kpi-note">RBI's gradual easing stimulates domestic deal activity and reduces corporate borrowing costs.</div></div>
+    <div class="kpi d3"><div class="kpi-label">India GDP Growth</div><div class="kpi-val">6.8%</div><div class="kpi-badge up">Top 3 Globally</div><div class="kpi-note">Sustains corporate earnings growth that underpins equity valuations and IPO demand.</div></div>
+    <div class="kpi d4"><div class="kpi-label">Global PE Dry Powder</div><div class="kpi-val">$3.9T</div><div class="kpi-badge up">Record High</div><div class="kpi-note">Record uncommitted private equity capital creates sustained demand for M&amp;A advisory globally.</div></div>
+    <div class="kpi d5"><div class="kpi-label">India Credit Rating</div><div class="kpi-val">BBB-</div><div class="kpi-badge up">Stable Outlook</div><div class="kpi-note">An upgrade to investment grade would significantly reduce corporate borrowing costs on international markets.</div></div>
+    <div class="kpi d6"><div class="kpi-label">India FII Inflows FY26E</div><div class="kpi-val">$28B</div><div class="kpi-badge up">Strong Demand</div><div class="kpi-note">Foreign institutional inflows support IPO and QIP activity, generating ECM fee income for domestic banks.</div></div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">KEY INTELLIGENCE OUTPUTS</div>
+  <div class="g2" style="margin-bottom:36px">
+    <div class="insight d1">
+      <div class="insight-num">A</div>
+      <div class="insight-title">Pitch Books and Idea Papers</div>
+      <div class="insight-desc">The primary tool through which a bank presents a deal idea to a potential client. Contains a market overview, strategic rationale, preliminary valuation, indicative deal structure, and the bank's credentials. In 2026, generative AI produces a first draft in under two hours by ingesting filings, press releases, and comparable deal data. Senior bankers then refine and personalise the content for the specific client relationship.</div>
+    </div>
+    <div class="insight blue d2">
+      <div class="insight-num">B</div>
+      <div class="insight-title">Fairness Opinions</div>
+      <div class="insight-desc">A formal written opinion from an independent bank confirming a transaction is financially fair to the shareholders being advised. Boards commission them to demonstrate fulfilment of fiduciary duty when approving mergers or leveraged buyouts. They carry legal weight, are disclosed in regulatory filings, and can be material in shareholder litigation. SEBI mandates specific disclosures for related-party transactions and open offers in India.</div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">AI AND INDIA INTELLIGENCE CONTEXT</div>
+  <div class="g2">
+    <div class="insight rec d1">
+      <div class="insight-num">01</div>
+      <div class="insight-title">How AI Changed Market Intelligence (2026)</div>
+      <div class="insight-desc">Large language models now scan thousands of earnings transcripts, filings, court records, and trade publications simultaneously for deal signals. When a company announces a strategic review, AI flags this to the coverage banker in minutes rather than days. Banks with sophisticated AI surface deal opportunities 40 to 60% earlier in the client decision cycle. Real-time processing of SEBI filings, NSE and BSE announcements, and MCA data is proving particularly valuable given India's high volume of regulatory disclosures.</div>
+    </div>
+    <div class="insight purple d2">
+      <div class="insight-num">02</div>
+      <div class="insight-title">India-Specific Intelligence Sources</div>
+      <div class="insight-desc">SEBI's DRHP database provides 6 to 12 months of advance visibility into companies preparing to list. The Ministry of Finance disinvestment pipeline signals privatisation mandates worth tens of thousands of crores annually. The National Infrastructure Pipeline discloses $1.4T of projects that generate project finance mandates. The RBI credit policy shapes the entire domestic DCM calendar. Banks with dedicated India intelligence teams consistently win a disproportionate share of domestic mandates by engaging earlier in the client decision cycle.</div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ RADAR ══ -->
+<div class="tab" id="tab-rd"><div class="sec">
+  <div class="sec-eyebrow">Chapter 09</div>
+  <div class="sec-title">Performance Radar</div>
+  <div class="sec-sub">Capability scores across eight dimensions for the top five global investment banks in 2026. Hover any data point to see the individual score, toggle banks on or off to compare, and use the controls to rotate or animate the chart. All scores are illustrative and educational.</div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">INTERACTIVE RADAR AND HEATMAP</div>
+  <div class="g2">
+    <div class="radar-wrap">
+      <div class="radar-scan-bar" style="top:28px"></div>
+      <div class="cbox-title" style="margin-bottom:3px">Bank Capability Radar 2026</div>
+      <div class="cbox-sub" style="margin-bottom:12px">Scores 0 to 100 across eight dimensions. Hover any point for detail. All scores illustrative.</div>
+      <canvas id="rcanvas" width="400" height="330"></canvas>
+      <div class="radar-tooltip" id="rtt"></div>
+      <div class="radar-ctrl" style="margin-top:12px">
+        <button class="radar-btn on" onclick="rtoggle(0,this)">JPMorgan</button>
+        <button class="radar-btn on" onclick="rtoggle(1,this)">Goldman Sachs</button>
+        <button class="radar-btn on" onclick="rtoggle(2,this)">Morgan Stanley</button>
+        <button class="radar-btn on" onclick="rtoggle(3,this)">BofA</button>
+        <button class="radar-btn" onclick="rtoggle(4,this)">Citigroup</button>
+      </div>
+      <div class="radar-ctrl" style="margin-top:8px">
+        <button class="radar-btn" onclick="ranim()">Animate</button>
+        <button class="radar-btn" onclick="rreset()">Reset</button>
+        <button class="radar-btn" onclick="rspin()" id="spinbtn">Auto Spin</button>
+        <button class="radar-btn" onclick="rexplode()">Explode View</button>
+      </div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:10px;justify-content:center">
+        <span style="font-size:11px;color:var(--text-3)">Rotate:</span>
+        <input type="range" id="r-rot" min="0" max="360" value="0" step="1" oninput="setRot(this.value)" style="width:110px;height:4px;border-radius:2px;background:var(--navy-3);outline:none;cursor:pointer;-webkit-appearance:none;margin-bottom:0">
+        <span style="font-size:11px;color:var(--gold)" id="r-rot-val">0 deg</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="cbox">
+        <div class="cbox-title" style="margin-bottom:4px">Performance Heatmap</div>
+        <div class="cbox-sub" style="margin-bottom:10px">Deeper gold indicates stronger performance.</div>
+        <div id="hm" style="overflow-x:auto"></div>
+      </div>
+      <div class="g2">
+        <div class="kpi"><div class="kpi-label">Hover Score</div><div class="kpi-val" id="hov-score" style="font-size:22px">--</div><div class="kpi-note" id="hov-label">Hover a radar point</div></div>
+        <div class="kpi"><div class="kpi-label">Top Performer</div><div style="font-family:'DM Serif Display',serif;font-size:14px;font-weight:700;color:var(--gold-lt);margin:6px 0 3px" id="top-bank">Goldman Sachs</div><div class="kpi-note" id="top-dim">M&amp;A Advisory: 98/100</div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ TOP FIRMS ══ -->
+<div class="tab" id="tab-fi"><div class="sec">
+  <div class="sec-eyebrow">Chapter 10</div>
+  <div class="sec-title">Top Global Investment Banking Firms 2026</div>
+  <div class="sec-sub">League table ranking by estimated IB revenue, M&amp;A market share, and strategic positioning. Revenue figures are illustrative and based on public filings, analyst estimates, and industry research. Actual figures may differ.</div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">GLOBAL LEAGUE TABLE</div>
+  <div class="cbox" style="padding:0;overflow:hidden">
+    <table class="firms-table">
+      <thead><tr><th style="width:52px">Rank</th><th>Institution</th><th>HQ</th><th>2026E Revenue</th><th>M&amp;A Share</th><th>Headcount</th><th>Core Strength</th></tr></thead>
+      <tbody>
+        <tr><td><span class="firm-rank">1</span></td><td><div class="firm-name">JPMorgan Chase</div><div class="firm-sub">Jamie Dimon, Chairman and CEO</div></td><td>New York</td><td><div style="font-weight:700;color:var(--gold-lt);font-size:13px">$8.4B</div><div class="firm-bar-wrap"><div class="firm-bar" style="width:100%"></div></div></td><td style="font-weight:700;color:#f1f5f9">10.2%</td><td>~295K</td><td><span class="badge" style="background:rgba(201,162,39,.12);color:var(--gold)">M&amp;A and DCM</span></td></tr>
+        <tr><td><span class="firm-rank">2</span></td><td><div class="firm-name">Goldman Sachs</div><div class="firm-sub">David Solomon, Chairman and CEO</div></td><td>New York</td><td><div style="font-weight:700;color:var(--gold-lt);font-size:13px">$7.1B</div><div class="firm-bar-wrap"><div class="firm-bar" style="width:85%"></div></div></td><td style="font-weight:700;color:#f1f5f9">8.6%</td><td>~46K</td><td><span class="badge" style="background:rgba(59,130,246,.12);color:var(--blue-lt)">Pure Advisory</span></td></tr>
+        <tr><td><span class="firm-rank">3</span></td><td><div class="firm-name">Morgan Stanley</div><div class="firm-sub">Ted Pick, President and CEO</div></td><td>New York</td><td><div style="font-weight:700;color:var(--gold-lt);font-size:13px">$5.8B</div><div class="firm-bar-wrap"><div class="firm-bar" style="width:69%"></div></div></td><td style="font-weight:700;color:#f1f5f9">7.0%</td><td>~84K</td><td><span class="badge" style="background:rgba(34,197,94,.12);color:var(--green)">ECM and Wealth</span></td></tr>
+        <tr><td><span class="firm-rank">4</span></td><td><div class="firm-name">Bank of America</div><div class="firm-sub">Brian Moynihan, Chairman and CEO</div></td><td>Charlotte</td><td><div style="font-weight:700;color:var(--gold-lt);font-size:13px">$5.3B</div><div class="firm-bar-wrap"><div class="firm-bar" style="width:63%"></div></div></td><td style="font-weight:700;color:#f1f5f9">6.4%</td><td>~212K</td><td><span class="badge" style="background:rgba(167,139,250,.12);color:var(--purple)">DCM</span></td></tr>
+        <tr><td><span class="firm-rank">5</span></td><td><div class="firm-name">Citigroup</div><div class="firm-sub">Jane Fraser, CEO</div></td><td>New York</td><td><div style="font-weight:700;color:var(--gold-lt);font-size:13px">$4.4B</div><div class="firm-bar-wrap"><div class="firm-bar" style="width:52%"></div></div></td><td style="font-weight:700;color:#f1f5f9">5.3%</td><td>~228K</td><td><span class="badge" style="background:rgba(251,146,60,.12);color:var(--amber)">EM and DCM</span></td></tr>
+        <tr><td><span class="firm-rank">6</span></td><td><div class="firm-name">Barclays</div><div class="firm-sub">C.S. Venkatakrishnan, CEO</div></td><td>London</td><td><div style="font-weight:700;color:var(--gold-lt);font-size:13px">$3.0B</div><div class="firm-bar-wrap"><div class="firm-bar" style="width:36%"></div></div></td><td style="font-weight:700;color:#f1f5f9">3.6%</td><td>~80K</td><td><span class="badge" style="background:rgba(59,130,246,.12);color:var(--blue-lt)">EMEA</span></td></tr>
+        <tr><td><span class="firm-rank">7</span></td><td><div class="firm-name">Deutsche Bank</div><div class="firm-sub">Christian Sewing, CEO</div></td><td>Frankfurt</td><td><div style="font-weight:700;color:var(--gold-lt);font-size:13px">$2.4B</div><div class="firm-bar-wrap"><div class="firm-bar" style="width:29%"></div></div></td><td style="font-weight:700;color:#f1f5f9">2.9%</td><td>~88K</td><td><span class="badge" style="background:rgba(34,197,94,.12);color:var(--green)">Europe</span></td></tr>
+        <tr><td><span class="firm-rank">8</span></td><td><div class="firm-name">Lazard</div><div class="firm-sub">Peter Orszag, CEO</div></td><td>New York and Paris</td><td><div style="font-weight:700;color:var(--gold-lt);font-size:13px">$1.5B</div><div class="firm-bar-wrap"><div class="firm-bar" style="width:18%"></div></div></td><td style="font-weight:700;color:#f1f5f9">1.8%</td><td>~3.2K</td><td><span class="badge" style="background:rgba(201,162,39,.12);color:var(--gold)">Pure Advisory</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div></div>
+
+<!-- ══ INDIA VIEW ══ -->
+<div class="tab" id="tab-in"><div class="sec">
+  <div class="sec-eyebrow">Chapter 11</div>
+  <div class="sec-title">India Investment Banking 2026</div>
+  <div class="sec-sub">India has become the world's third-largest investment banking market by fee pool, growing at a 24% compound annual rate since 2018. The drivers are a record IPO pipeline, rising domestic M&amp;A, infrastructure investment, and growing foreign institutional interest. Illustrative data based on SEBI, NSE, and Bloomberg estimates.</div>
+
+  <div class="sec-label" style="color:var(--amber)">KEY INDIA METRICS 2026</div>
+  <div class="india-stats">
+    <div class="india-kpi d1"><div class="india-val">$112B</div><div class="india-lbl">India M&amp;A 2026E</div></div>
+    <div class="india-kpi d2"><div class="india-val">INR 3.4T</div><div class="india-lbl">IPO Proceeds 2026E</div></div>
+    <div class="india-kpi d3"><div class="india-val">$5.4T</div><div class="india-lbl">India GDP 2026E</div></div>
+    <div class="india-kpi d4"><div class="india-val">420+</div><div class="india-lbl">Mainboard IPOs FY26E</div></div>
+    <div class="india-kpi d5"><div class="india-val">$18.2B</div><div class="india-lbl">India IB Revenue</div></div>
+    <div class="india-kpi d6"><div class="india-val">3rd</div><div class="india-lbl">Global IB Market Rank</div></div>
+  </div>
+
+  <div class="sec-label" style="color:var(--amber)">DEAL VOLUME AND IPO TRENDS</div>
+  <div class="g2" style="margin-bottom:28px">
+    <div class="cbox"><div class="cbox-title">India M&amp;A Volume 2015 to 2026E (USD Billions)</div><div class="cbox-sub">Growth driven by domestic consolidation, foreign private equity, and infrastructure transactions. Illustrative.</div><div style="height:220px;position:relative"><canvas id="c-ima"></canvas></div></div>
+    <div class="cbox"><div class="cbox-title">India IPO Market 2018 to 2026E</div><div class="cbox-sub">Listing count (left axis) and gross proceeds in USD Billions (right, dashed). India had over 420 mainboard IPOs in FY26E. Illustrative.</div><div style="height:220px;position:relative"><canvas id="c-iipo"></canvas></div></div>
+  </div>
+
+  <div class="sec-label" style="color:var(--amber)">SECTOR BREAKDOWN AND GROWTH INDEX</div>
+  <div class="g2" style="margin-bottom:28px">
+    <div class="cbox"><div class="cbox-title">Top Sectors — India IB 2026E (USD Billions)</div><div class="cbox-sub">Technology leads; infrastructure is second, driven by the National Infrastructure Pipeline of approximately $1.4T. Illustrative.</div><div style="height:220px;position:relative"><canvas id="c-isec"></canvas></div></div>
+    <div class="cbox"><div class="cbox-title">India vs Global IB Revenue Growth Index</div><div class="cbox-sub">Indexed to 100 in 2018. India has grown approximately 4.8 times versus global growth of approximately 1.6 times over the period. Illustrative.</div><div style="height:220px;position:relative"><canvas id="c-ivg"></canvas></div></div>
+  </div>
+
+  <div class="sec-label" style="color:var(--amber)">LEADING DOMESTIC BANKS (FY2026E)</div>
+  <div class="ga">
+    <div class="kpi d1"><div class="kpi-label">Kotak Mahindra Capital</div><div class="kpi-val" style="font-size:20px">INR 620Cr</div><div class="kpi-badge up">+27% YoY</div><div class="kpi-note">Number 1 domestic ECM in 2026</div></div>
+    <div class="kpi d2"><div class="kpi-label">ICICI Securities</div><div class="kpi-val" style="font-size:20px">INR 1,380Cr</div><div class="kpi-badge up">+25% YoY</div><div class="kpi-note">Leading retail distribution franchise</div></div>
+    <div class="kpi d3"><div class="kpi-label">SBI Capital Markets</div><div class="kpi-val" style="font-size:20px">INR 490Cr</div><div class="kpi-badge up">+20% YoY</div><div class="kpi-note">PSU privatisations leader</div></div>
+    <div class="kpi d4"><div class="kpi-label">HDFC Bank IB</div><div class="kpi-val" style="font-size:20px">INR 1,020Cr</div><div class="kpi-badge up">+23% YoY</div><div class="kpi-note">Strong domestic DCM franchise</div></div>
+    <div class="kpi d5"><div class="kpi-label">JM Financial</div><div class="kpi-val" style="font-size:20px">INR 340Cr</div><div class="kpi-badge up">+18% YoY</div><div class="kpi-note">Leading M&amp;A boutique in India</div></div>
+  </div>
+</div></div>
+
+<!-- ══ CASE STUDIES ══ -->
+<div class="tab" id="tab-cs"><div class="sec">
+  <div class="sec-eyebrow">Chapter 12</div>
+  <div class="sec-title">Case Studies</div>
+  <div class="sec-sub">Six landmark transactions from India and global markets. Each case explains what happened, who was involved, what the key figures were, and the core lesson about how investment banking works in practice.</div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">LANDMARK TRANSACTIONS</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:28px">
+    <div class="case-card d1">
+      <div class="case-header">
+        <div class="case-title">Reliance Industries Rights Issue</div>
+        <span class="badge" style="background:rgba(251,146,60,.14);color:var(--amber)">India</span>
+        <span class="badge" style="background:rgba(59,130,246,.12);color:var(--blue-lt);margin-left:4px">ECM</span>
+        <div class="case-desc" style="margin-top:10px">India's largest ever rights issue raised INR 53,125 crore to make Reliance Industries debt-free within months. Investor demand exceeded the shares on offer at 101% subscription, a strong signal of market confidence in the company's strategy.</div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div><div class="case-m-val">$7.1B</div><div class="case-m-lbl">Deal Size</div></div>
+          <div><div class="case-m-val">101%</div><div class="case-m-lbl">Subscribed</div></div>
+          <div><div class="case-m-val">2020</div><div class="case-m-lbl">Year</div></div>
+        </div>
+      </div>
+      <div class="case-body"><div class="case-note">Key lesson: A company with strong fundamentals and a clear capital allocation plan can access markets even in uncertain conditions. Advisors: Kotak Mahindra Capital, Citigroup, and JPMorgan.</div></div>
+    </div>
+    <div class="case-card d2">
+      <div class="case-header">
+        <div class="case-title">HDFC and HDFC Bank Merger</div>
+        <span class="badge" style="background:rgba(251,146,60,.14);color:var(--amber)">India</span>
+        <span class="badge" style="background:rgba(167,139,250,.12);color:var(--purple);margin-left:4px">M&amp;A</span>
+        <div class="case-desc" style="margin-top:10px">India's largest ever merger combined the leading mortgage lender with the biggest private sector bank, creating one of the world's ten largest banks by market capitalisation and the most significant financial sector transaction in India's history.</div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div><div class="case-m-val">$40B</div><div class="case-m-lbl">Deal Value</div></div>
+          <div><div class="case-m-val">INR 23T</div><div class="case-m-lbl">Balance Sheet</div></div>
+          <div><div class="case-m-val">2023</div><div class="case-m-lbl">Close</div></div>
+        </div>
+      </div>
+      <div class="case-body"><div class="case-note">Key lesson: Merging regulated financial institutions requires RBI, SEBI, CCI, and NCLT approvals simultaneously. Lead advisors: JM Financial, Kotak Mahindra Capital, Morgan Stanley, and Jefferies.</div></div>
+    </div>
+    <div class="case-card d3">
+      <div class="case-header">
+        <div class="case-title">Microsoft and Activision Blizzard</div>
+        <span class="badge" style="background:rgba(34,197,94,.12);color:var(--green)">Global</span>
+        <span class="badge" style="background:rgba(167,139,250,.12);color:var(--purple);margin-left:4px">M&amp;A</span>
+        <div class="case-desc" style="margin-top:10px">The largest gaming acquisition in history faced a 20-month regulatory battle across the United States, European Union, and United Kingdom. Microsoft was required to restructure game streaming rights before receiving final approval, illustrating how antitrust review has become the primary execution risk in large-cap technology transactions.</div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div><div class="case-m-val">$68.7B</div><div class="case-m-lbl">Deal Value</div></div>
+          <div><div class="case-m-val">20 Months</div><div class="case-m-lbl">Timeline</div></div>
+          <div><div class="case-m-val">2023</div><div class="case-m-lbl">Close</div></div>
+        </div>
+      </div>
+      <div class="case-body"><div class="case-note">Key lesson: Even sound deals can be delayed or restructured by antitrust regulators. Goldman Sachs advised Microsoft and Allen and Co. advised Activision Blizzard.</div></div>
+    </div>
+    <div class="case-card d4">
+      <div class="case-header">
+        <div class="case-title">Saudi Aramco IPO</div>
+        <span class="badge" style="background:rgba(34,197,94,.12);color:var(--green)">Global</span>
+        <span class="badge" style="background:rgba(59,130,246,.12);color:var(--blue-lt);margin-left:4px">IPO</span>
+        <div class="case-desc" style="margin-top:10px">The world's largest IPO listed on the Tadawul exchange in Riyadh. The Saudi government retained 98.5% of the company and used the proceeds to fund Vision 2030 economic diversification. The $1.7T market capitalisation on listing day set a historic benchmark for state-owned enterprise equity offerings globally.</div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div><div class="case-m-val">$25.6B</div><div class="case-m-lbl">Proceeds</div></div>
+          <div><div class="case-m-val">$1.7T</div><div class="case-m-lbl">Market Cap</div></div>
+          <div><div class="case-m-val">2019</div><div class="case-m-lbl">Year</div></div>
+        </div>
+      </div>
+      <div class="case-body"><div class="case-note">Key lesson: The world's largest transactions require a multi-bank syndicate to share underwriting risk and reach the broadest possible global investor base. Six-bank syndicate: JPMorgan, Goldman, Morgan Stanley, HSBC, Citigroup, and BofA.</div></div>
+    </div>
+    <div class="case-card d5">
+      <div class="case-header">
+        <div class="case-title">Twitter Leveraged Buyout (2022)</div>
+        <span class="badge" style="background:rgba(34,197,94,.12);color:var(--green)">Global</span>
+        <span class="badge" style="background:rgba(240,82,82,.12);color:var(--red);margin-left:4px">LBO</span>
+        <div class="case-desc" style="margin-top:10px">A consortium of banks committed $13B in bridge financing to fund the acquisition but were unable to distribute the debt to bond market investors as conditions deteriorated sharply. The position remains on certain bank balance sheets in 2026, carried at a material discount to par value.</div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div><div class="case-m-val">$44B</div><div class="case-m-lbl">Deal Value</div></div>
+          <div><div class="case-m-val">$13B</div><div class="case-m-lbl">Debt Hung</div></div>
+          <div><div class="case-m-val">2022</div><div class="case-m-lbl">Year</div></div>
+        </div>
+      </div>
+      <div class="case-body"><div class="case-note">Key lesson: When banks commit bridge financing, they assume the risk the debt market will not absorb the paper at expected prices. This is a textbook example of execution risk overcoming fee income. Banks: Morgan Stanley, Bank of America, and Barclays.</div></div>
+    </div>
+    <div class="case-card d6">
+      <div class="case-header">
+        <div class="case-title">Adani Group: FPO Withdrawal and Recovery</div>
+        <span class="badge" style="background:rgba(251,146,60,.14);color:var(--amber)">India</span>
+        <span class="badge" style="background:rgba(59,130,246,.12);color:var(--blue-lt);margin-left:4px">ECM</span>
+        <div class="case-desc" style="margin-top:10px">Following a short-seller report in January 2023, Adani Group share prices fell sharply and the group withdrew a $2.4B follow-on public offering within days of its launch. GQG Partners committed $1.9B in 2023 and full international capital market access was restored by 2025 to 2026.</div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div><div class="case-m-val">$2.4B</div><div class="case-m-lbl">FPO Withdrawn</div></div>
+          <div><div class="case-m-val">$1.9B</div><div class="case-m-lbl">GQG Invested</div></div>
+          <div><div class="case-m-val">2023 to 2026</div><div class="case-m-lbl">Recovery</div></div>
+        </div>
+      </div>
+      <div class="case-body"><div class="case-note">Key lesson: Investor confidence and corporate credibility are as important as financial performance in ECM. Sustained transparent disclosure can restore capital market access over time.</div></div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">DEAL SIZE COMPARISON</div>
+  <div class="cbox">
+    <div class="cbox-title">Landmark Transaction Size Comparison (USD Billions)</div>
+    <div class="cbox-sub">Six selected deals benchmarked across India and global markets. All figures are based on public announcements at the time of transaction.</div>
+    <div style="height:220px;position:relative"><canvas id="c-cases"></canvas></div>
+  </div>
+</div></div>
+
+<!-- ══ ESG ══ -->
+<div class="tab" id="tab-esg"><div class="sec">
+  <div class="sec-eyebrow">Chapter 13</div>
+  <div class="sec-title">ESG in Investment Banking</div>
+  <div class="sec-sub">Environmental, Social, and Governance considerations have moved from optional reporting to a mandatory component of every major capital markets transaction. Understanding ESG in investment banking is essential for any finance professional in 2026.</div>
+
+  <div class="callout">
+    <div class="callout-mark">"</div>
+    <div class="callout-quote">ESG is no longer a reporting exercise or a marketing initiative. In 2026, it is a transaction gating criterion. If an acquisition target, bond issuer, or IPO candidate cannot demonstrate credible environmental and governance standards, institutional investors will simply not participate in the deal.</div>
+    <div class="callout-attr">ESG and Capital Markets · 2026</div>
+  </div>
+
+  <div class="sec-label" style="color:var(--green)">THE THREE PILLARS</div>
+  <div class="g3" style="margin-bottom:36px">
+    <div class="insight rec d1">
+      <div class="insight-num">E</div>
+      <div class="insight-title">Environmental</div>
+      <div class="insight-desc">Assesses a company's impact on the natural world: carbon emissions across all three scopes, energy transition strategy, physical climate risks, water usage, waste management, and biodiversity impact. Every transaction above approximately $500M must now include an environmental risk section in the information memorandum. In India, SEBI mandates the Business Responsibility and Sustainability Report for the top 1,000 listed companies since FY23.</div>
+    </div>
+    <div class="insight blue d2">
+      <div class="insight-num">S</div>
+      <div class="insight-title">Social</div>
+      <div class="insight-desc">Examines workforce practices, diversity metrics, labour rights in supply chains, community impact, data privacy, and product safety records. Poor social performance during M&amp;A due diligence can result in a purchase price discount or outright deal cancellation. The Companies Act 2013 requires qualifying Indian companies to spend 2% of net profit on CSR, a commitment reviewed in every domestic M&amp;A transaction.</div>
+    </div>
+    <div class="insight d3">
+      <div class="insight-num">G</div>
+      <div class="insight-title">Governance</div>
+      <div class="insight-desc">Examines how a company is directed and controlled: board independence, chairman and CEO separation, audit committee quality, executive pay alignment, related-party transactions, and anti-corruption controls. Institutional investors have exercised voting rights on governance matters since the 1990s. SEBI's LODR Regulations prescribe minimum governance standards for all listed companies in India.</div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="color:var(--green)">SUSTAINABLE FINANCE PRODUCTS</div>
+  <div class="g2" style="margin-bottom:36px">
+    <div class="insight rec d1">
+      <div class="insight-num">01</div>
+      <div class="insight-title">Green Bonds and Sustainability-Linked Bonds</div>
+      <div class="insight-desc">A green bond designates proceeds exclusively for environmental projects such as renewable energy, clean transport, and water management. Well-structured green bonds achieve a pricing benefit (the greenium) of 3 to 10 basis points versus conventional bonds. A sustainability-linked bond allows proceeds for any purpose but steps up the coupon if the issuer misses predetermined ESG targets, imposing a direct financial cost. India's first Sovereign Green Bond (January 2023, INR 16,000 crore) priced 5 to 6 basis points below equivalent conventional bonds, establishing a credible market and benchmark yield curve for Indian corporates.</div>
+    </div>
+    <div class="insight blue d2">
+      <div class="insight-num">02</div>
+      <div class="insight-title">ESG Due Diligence in M&amp;A</div>
+      <div class="insight-desc">ESG due diligence now sits alongside financial, legal, and tax workstreams in every material transaction. Material ESG liabilities such as contaminated land, environmental litigation, or supply chain violations can result in a direct purchase price reduction. Sale and purchase agreements now routinely include ESG representations, extending legal liability to known sustainability matters. In India, manufacturing acquisitions require close review of pollution control compliance and labour law adherence, the two most common ESG risk areas.</div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="color:var(--green)">KEY ESG METRICS AND INDIA CONTEXT</div>
+  <div class="g4" style="margin-bottom:36px">
+    <div class="kpi d1"><div class="kpi-label">Sustainable Bond Issuance 2026E</div><div class="kpi-val">$1.8T</div><div class="kpi-badge up">+12% YoY</div><div class="kpi-note">Green, social, sustainability, and SLB combined globally. Illustrative.</div></div>
+    <div class="kpi d2"><div class="kpi-label">India Green Bond Market FY26E</div><div class="kpi-val">INR 85,000Cr</div><div class="kpi-badge up">+38% YoY</div><div class="kpi-note">Domestic green and sustainability-linked bond issuances. SEBI framework data. Illustrative.</div></div>
+    <div class="kpi d3"><div class="kpi-label">ESG AUM Globally 2026E</div><div class="kpi-val">$45T</div><div class="kpi-badge up">+8% CAGR</div><div class="kpi-note">Assets managed under ESG-labelled or ESG-integrated strategies globally. Illustrative.</div></div>
+    <div class="kpi d4"><div class="kpi-label">Deals Requiring ESG DD</div><div class="kpi-val">&gt;$500M</div><div class="kpi-badge up">Industry Standard</div><div class="kpi-note">Transactions above $500M almost universally require a formal ESG workstream set by co-investors and lenders.</div></div>
+  </div>
+
+  <div class="sec-label" style="color:var(--green)">REGULATORY LANDSCAPE</div>
+  <div class="g2">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="insight rec d1"><div class="insight-num">EU</div><div class="insight-title">EU Taxonomy Regulation</div><div class="insight-desc">Defines which economic activities qualify as environmentally sustainable in Europe, determining whether a bond can be marketed as green to European institutional investors.</div></div>
+      <div class="insight blue d2"><div class="insight-num">EU</div><div class="insight-title">SFDR (Sustainable Finance Disclosure Regulation)</div><div class="insight-desc">Requires fund managers distributing in Europe to classify funds as Article 6, 8, or 9 depending on their ESG ambition and disclose how they integrate sustainability factors.</div></div>
+      <div class="insight d3"><div class="insight-num">US</div><div class="insight-title">SEC Climate Disclosure Rules</div><div class="insight-desc">Require US-listed companies to disclose material climate risks and Scope 1 and 2 emissions, directly affecting how US targets are assessed in cross-border M&amp;A due diligence.</div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="insight amber d4"><div class="insight-num">IN</div><div class="insight-title">SEBI BRSR and Green Debt Framework</div><div class="insight-desc">SEBI's Business Responsibility and Sustainability Reporting requirements and the 2023 Green Debt Securities framework define ESG disclosure and labelling standards for all Indian capital markets transactions.</div></div>
+      <div class="insight purple d5"><div class="insight-num">GL</div><div class="insight-title">ISSB Standards (IFRS S1 and S2)</div><div class="insight-desc">The International Sustainability Standards Board published global baseline sustainability disclosure standards in 2023, progressively being adopted by regulators worldwide including India's SEBI.</div></div>
+      <div class="insight teal d6"><div class="insight-num">IN</div><div class="insight-title">India Net-Zero Opportunity</div><div class="insight-desc">India targets net-zero by 2070 and 500 GW of non-fossil energy by 2030, requiring an estimated $200B per year in green financing. This creates an enormous pipeline for green bonds, SLLs, and renewable energy project finance mandates.</div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ REFERENCES ══ -->
+<div class="tab" id="tab-ds"><div class="sec">
+  <div class="sec-eyebrow">Chapter 14</div>
+  <div class="sec-title">References and Data Sources</div>
+  <div class="sec-sub">All figures are aggregated from authoritative regulators, exchanges, multilateral institutions, and research providers, and reconciled for 2026 projections. All charts carry an illustrative designation where data has been synthesised for educational purposes.</div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">PRIMARY DATA SOURCES</div>
+  <div class="ds-grid">
+    <div class="ds-card d1"><div class="ds-cat">Regulator</div><div class="ds-name">RBI</div><div class="ds-desc">Reserve Bank of India. Monetary policy, banking statistics, and credit data.</div></div>
+    <div class="ds-card d1"><div class="ds-cat">Regulator</div><div class="ds-name">SEBI</div><div class="ds-desc">Securities and Exchange Board of India. Issuances, DRHPs, and market operations.</div></div>
+    <div class="ds-card d2"><div class="ds-cat">Exchange</div><div class="ds-name">NSE</div><div class="ds-desc">National Stock Exchange of India. Indices, listings, and trading volumes.</div></div>
+    <div class="ds-card d2"><div class="ds-cat">Exchange</div><div class="ds-name">BSE</div><div class="ds-desc">Bombay Stock Exchange. Sensex, corporate filings, and historical data.</div></div>
+    <div class="ds-card d3"><div class="ds-cat">Multilateral</div><div class="ds-name">IMF</div><div class="ds-desc">World Economic Outlook and Global Financial Stability Report.</div></div>
+    <div class="ds-card d3"><div class="ds-cat">Multilateral</div><div class="ds-name">World Bank</div><div class="ds-desc">Global GDP, capital flows, and cross-border finance indicators.</div></div>
+    <div class="ds-card d4"><div class="ds-cat">Government</div><div class="ds-name">Ministry of Finance</div><div class="ds-desc">Union Budget, disinvestment programme, and PSU privatisation data.</div></div>
+    <div class="ds-card d4"><div class="ds-cat">Terminal</div><div class="ds-name">Bloomberg</div><div class="ds-desc">League tables, deal flow, and real-time capital markets analytics.</div></div>
+    <div class="ds-card d5"><div class="ds-cat">Market Data</div><div class="ds-name">Dealogic</div><div class="ds-desc">IB fee pool estimates, ECM, DCM, and M&amp;A league tables and pipeline data.</div></div>
+    <div class="ds-card d5"><div class="ds-cat">Consulting</div><div class="ds-name">McKinsey</div><div class="ds-desc">Global Banking Annual Review 2026, capital markets productivity, and AI adoption data.</div></div>
+    <div class="ds-card d6"><div class="ds-cat">Consulting</div><div class="ds-name">PwC</div><div class="ds-desc">Deals Insights, ESG frameworks, sector M&amp;A outlooks, and AI in IB survey 2026.</div></div>
+    <div class="ds-card d6"><div class="ds-cat">Consulting</div><div class="ds-name">Deloitte</div><div class="ds-desc">Global M&amp;A Trends, private credit, and restructuring annual reports.</div></div>
+    <div class="ds-card"><div class="ds-cat">Consulting</div><div class="ds-name">EY</div><div class="ds-desc">Global IPO Trends and Capital Confidence Barometer.</div></div>
+    <div class="ds-card"><div class="ds-cat">Ratings</div><div class="ds-name">S&amp;P Global</div><div class="ds-desc">Ratings intelligence, LCD leveraged finance data, and market intelligence.</div></div>
+    <div class="ds-card"><div class="ds-cat">ESG</div><div class="ds-name">Climate Bonds Initiative</div><div class="ds-desc">Green and sustainable bond market data, standards, and issuance statistics.</div></div>
+    <div class="ds-card"><div class="ds-cat">Governance</div><div class="ds-name">ISSB</div><div class="ds-desc">International Sustainability Standards Board. IFRS S1 and S2 global disclosure standards.</div></div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">METHODOLOGY AND STANDARDS</div>
+  <div class="g2">
+    <div class="card card-gold">
+      <div class="kpi-label" style="margin-bottom:12px">Methodology</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="insight d1" style="padding:12px 14px"><div class="insight-title" style="font-size:12px">Source Triangulation</div><div class="insight-desc">Figures are triangulated across at least two independent sources wherever possible. 2026 projections blend IMF WEO baselines, consulting-house forecasts from PwC, McKinsey, and EY, and Bloomberg and Dealogic league table trajectories.</div></div>
+        <div class="insight d2" style="padding:12px 14px"><div class="insight-title" style="font-size:12px">Currency and Classification</div><div class="insight-desc">Currency conversions use RBI FBIL and IMF period averages. India-specific KPIs use SEBI and NSE and BSE originals. Classifications follow industry league table conventions: M&amp;A by announced value, ECM and DCM by gross proceeds, sectors per GICS.</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="kpi-label" style="margin-bottom:12px">Important Notices</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="insight rec d1" style="padding:12px 14px"><div class="insight-title" style="font-size:12px">AI Metrics Source</div><div class="insight-desc">AI-related metrics on diligence time-savings and origination speed are median values cited in McKinsey Global Banking Annual Review 2026 and the PwC Deals AI Survey 2026.</div></div>
+        <div class="insight risk d2" style="padding:12px 14px"><div class="insight-title" style="font-size:12px">Illustrative Data Notice</div><div class="insight-desc">All chart data is synthesised for educational purposes. It does not represent actual reported figures and should not be used for investment decisions or professional financial analysis.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <strong>EDUCATIONAL DISCLAIMER:</strong> This dashboard is designed exclusively for academic and educational purposes. All figures, projections, case studies, and simulations are illustrative and derived from publicly available data as of 2026. Nothing here constitutes investment advice, a recommendation to buy or sell any security, or a solicitation of any financial transaction. Real-world investment banking mandates involve extensive regulatory, legal, and ethical considerations not modelled here. Independent professional advice must be sought before acting on any information presented. Designed and Developed by <span style="color:var(--gold)">G Hari Charan</span>.
+  </div>
+</div></div>
+
+<!-- ══ GLOSSARY ══ -->
+<div class="tab" id="tab-gl"><div class="sec">
+  <div class="sec-eyebrow">Reference Guide</div>
+  <div class="sec-title">Glossary of Investment Banking Terms</div>
+  <div class="sec-sub">Every important concept in investment banking, explained in plain language. Use this as your reference guide whether you are reading a pitch book, following a deal in the news, or building your knowledge from the ground up.</div>
+
+  <div class="callout">
+    <div class="callout-mark">"</div>
+    <div class="callout-quote">The language of finance is not designed to confuse you. It was built for precision. Once you learn the vocabulary, the entire system becomes readable.</div>
+    <div class="callout-attr">Investment Banking Glossary · 2026</div>
+  </div>
+
+  <!-- FILTER ROW -->
+  <div class="toggle-row" id="gl-filters">
+    <button class="toggle-btn on" onclick="filterGl('all',this)">All Terms</button>
+    <button class="toggle-btn" onclick="filterGl('core',this)">Core Concepts</button>
+    <button class="toggle-btn" onclick="filterGl('deals',this)">Deals and M&A</button>
+    <button class="toggle-btn" onclick="filterGl('markets',this)">Capital Markets</button>
+    <button class="toggle-btn" onclick="filterGl('valuation',this)">Valuation</button>
+    <button class="toggle-btn" onclick="filterGl('india',this)">India Specific</button>
+    <button class="toggle-btn" onclick="filterGl('esg',this)">ESG and AI</button>
+  </div>
+
+  <div id="gl-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px"></div>
+</div></div>
+
+<!-- ══ CONCLUSION ══ -->
+<div class="tab" id="tab-cn"><div class="sec">
+  <div class="sec-eyebrow">Chapter 15</div>
+  <div class="sec-title">Conclusion</div>
+  <div class="sec-sub">Investment banking in 2026 stands at a structural turning point. Global revenues approach the 2021 record, India has cemented its place as the third-largest market, and AI has permanently reshaped how deals are originated and executed.</div>
+
+  <div class="callout">
+    <div class="callout-mark">"</div>
+    <div class="callout-quote">Investment banking in 2026 is no longer defined by balance-sheet size alone. It is defined by intellectual capital, data intelligence, sustainability expertise, and the ability to translate artificial intelligence into better client outcomes.</div>
+    <div class="callout-attr">Concluding Thesis. Investment Banking Intelligence Dashboard 2026.</div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">KEY INSIGHTS</div>
+  <div class="g2" style="margin-bottom:36px">
+    <div class="insight d1"><div class="insight-num">01</div><div class="insight-title">AI is a Productivity Layer, Not a Replacement</div><div class="insight-desc">Generative AI reduces due diligence timelines by 40 to 60% and pitch-book preparation by approximately half. However, senior banker relationships still determine who wins every mandate above $1B. AI augments human judgement; it does not substitute for it.</div></div>
+    <div class="insight blue d2"><div class="insight-num">02</div><div class="insight-title">Private Credit is Reshaping Fee Pools</div><div class="insight-desc">Direct lenders now compete with syndicated debt capital markets for mid-market corporate lending. Investment banks have responded by acting as originate-and-distribute partners, sharing economics with private credit funds rather than competing against them.</div></div>
+    <div class="insight amber d3"><div class="insight-num">03</div><div class="insight-title">India is a Structural Growth Engine</div><div class="insight-desc">Indian IB fee revenue has compounded at approximately 24% per annum since 2018. Over 420 mainboard IPO listings and $18.2B in estimated fees make India the third-largest market globally, with a growth rate exceeding China over the same period.</div></div>
+    <div class="insight rec d4"><div class="insight-num">04</div><div class="insight-title">ESG is Now a Transactional Requirement</div><div class="insight-desc">Every transaction above approximately $500M now requires a formal ESG diligence workstream and, in many cases, sustainability-linked structuring. Failure to meet minimum ESG standards results in institutional investors declining to participate.</div></div>
+    <div class="insight purple d5"><div class="insight-num">05</div><div class="insight-title">Fee Compression in Standardised Products</div><div class="insight-desc">Investment-grade DCM fees have compressed to 15 to 40 basis points as technology reduces execution costs. Volume and speed now drive economics in standardised segments. Advisory fees on complex transactions remain the most defensible and highest-margin revenue stream.</div></div>
+    <div class="insight teal d6"><div class="insight-num">06</div><div class="insight-title">Boutique Advisors Capture Disproportionate Fee Share</div><div class="insight-desc">Pure advisory firms such as Lazard, Evercore, Centerview globally, and Avendus and JM Financial in India, capture a fee share that exceeds their relative size. Clients value their conflict-free counsel on the most sensitive strategic transactions.</div></div>
+  </div>
+
+  <div class="sec-label" style="color:var(--green)">STRATEGIC RECOMMENDATIONS</div>
+  <div class="g2" style="margin-bottom:36px">
+    <div class="insight rec d1"><div class="insight-num">01</div><div class="insight-title">Invest in AI-Native Deal Origination</div><div class="insight-desc">Deploy large language model tools to screen regulatory filings, patent databases, and news continuously. Banks that build this infrastructure in 2026 will compound the origination advantage throughout the decade.</div></div>
+    <div class="insight rec d2"><div class="insight-num">02</div><div class="insight-title">Partner Deeply with Private Credit Funds</div><div class="insight-desc">Build formal co-origination arrangements with leading private credit funds. Direct competition with private credit on price and speed is structurally difficult for regulated banks operating under Basel III capital requirements.</div></div>
+    <div class="insight rec d3"><div class="insight-num">03</div><div class="insight-title">Expand Coverage in India and the Middle East</div><div class="insight-desc">Reallocate senior banker capacity to Mumbai, Bengaluru, Riyadh, and Abu Dhabi, where deal fee pools are compounding at rates significantly above mature market averages.</div></div>
+    <div class="insight rec d4"><div class="insight-num">04</div><div class="insight-title">Build Dedicated ESG Structuring Capability</div><div class="insight-desc">Create integrated sustainability-linked capital teams that can structure green bonds, advise on ESG due diligence in M&amp;A, and provide BRSR and ISSB reporting advisory services. A differentiator in large-cap mandates through 2030.</div></div>
+  </div>
+
+  <div class="sec-label" style="color:var(--red)">RISKS AND HEADWINDS</div>
+  <div class="g2" style="margin-bottom:36px">
+    <div class="insight risk d1"><div class="insight-num">01</div><div class="insight-title">Macroeconomic and Interest Rate Volatility</div><div class="insight-desc">A resurgence of long-end rate stress, driven by fiscal expansion or persistent inflation, could rapidly close issuance windows and reproduce 2022-style deal droughts. The 2026 recovery is genuine but sensitive to macro shocks.</div></div>
+    <div class="insight risk d2"><div class="insight-num">02</div><div class="insight-title">Regulatory Fragmentation Across Jurisdictions</div><div class="insight-desc">Divergent frameworks across the United States, European Union, United Kingdom, India, and China raise cross-border execution risk. Antitrust review timelines have extended to over 18 months for large technology transactions, threatening deal certainty.</div></div>
+    <div class="insight risk d3"><div class="insight-num">03</div><div class="insight-title">Hung Bridge Loans and LBO Underwriting Risk</div><div class="insight-desc">Legacy leveraged financing commitments remain on certain bank balance sheets at discounts to par value. Strict underwriting discipline in leveraged finance commitments is essential to avoiding a repeat of the Twitter situation.</div></div>
+    <div class="insight risk d4"><div class="insight-num">04</div><div class="insight-title">Talent and Compensation Pressure</div><div class="insight-desc">Boutique advisory firms and private capital managers continue to attract senior bankers with more favourable economic arrangements. Compensation inflation compresses net margins even as fee revenues recover.</div></div>
+  </div>
+
+  <div class="sec-label" style="color:var(--gold-lt)">FINAL TAKEAWAYS</div>
+  <div class="g4" style="margin-bottom:36px">
+    <div class="takeaway d1"><div class="takeaway-num">$94B</div><div class="takeaway-lbl">Global IB Revenue 2026E</div><div class="takeaway-d">Approaching the 2021 record of $89.4B in fees</div></div>
+    <div class="takeaway d2"><div class="takeaway-num">$3.8T</div><div class="takeaway-lbl">Global M&amp;A Volume</div><div class="takeaway-d">+18.8% year on year, confirming full cycle recovery</div></div>
+    <div class="takeaway d3"><div class="takeaway-num">$18.2B</div><div class="takeaway-lbl">India IB Revenue</div><div class="takeaway-d">Third largest market globally in 2026</div></div>
+    <div class="takeaway d4"><div class="takeaway-num">60%</div><div class="takeaway-lbl">AI Diligence Time Saved</div><div class="takeaway-d">Median across top global banks in 2026</div></div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-mark">"</div>
+    <div class="callout-quote">The firms that will lead investment banking through 2030 are those that successfully combine the trust and relationships of traditional relationship banking with the speed, insight, and precision of a technology-driven advisory model. Capital intelligence is the new competitive advantage.</div>
+    <div class="callout-attr">Concluding Thesis. Investment Banking Intelligence Dashboard 2026. Designed and Developed by G Hari Charan.</div>
+  </div>
+</div></div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div>
+    <div class="footer-brand">Investment Banking Intelligence Dashboard</div>
+    <div style="margin-top:6px;font-size:11px;color:var(--text-3)">A comprehensive educational resource covering global capital markets, deal economics, and emerging market dynamics. Updated to 2026.</div>
+    <div class="footer-tags">
+      <span class="footer-tag">M&amp;A</span><span class="footer-tag">ECM</span><span class="footer-tag">DCM</span>
+      <span class="footer-tag">India IB</span><span class="footer-tag">Private Credit</span><span class="footer-tag">ESG</span><span class="footer-tag">AI in Finance</span>
+    </div>
+  </div>
+  <div class="footer-credit">
+    Designed &amp; Developed by<br><span>G Hari Charan</span>
+    <div style="font-size:9.5px;color:var(--text-3);margin-top:8px;letter-spacing:.5px">Educational use only. All data illustrative.<br>Sources: IMF, SEBI, NSE, Bloomberg, Dealogic, McKinsey</div>
+  </div>
+</footer>
+
+</div><!-- /main -->
+<script>
+var G={gold:'#c9a227',gl:'#e8b84b',gd:'#8a6c10',bl:'#3b82f6',bll:'#60a5fa',gr:'#22c55e',rd:'#f05252',pu:'#a78bfa',tl:'#2dd4bf',am:'#fb923c',sv:'#94a3b8'};
+var XS={grid:{color:'rgba(148,163,184,.07)'},ticks:{color:'#475569',font:{size:10,family:'Inter'}},border:{color:'rgba(148,163,184,.08)'}};
+var YS={grid:{color:'rgba(148,163,184,.07)'},ticks:{color:'#475569',font:{size:10,family:'Inter'}},border:{color:'transparent'}};
+var LG={display:true,position:'top',labels:{color:'#94a3b8',font:{size:10,family:'Inter'},boxWidth:8,padding:10}};
+var rInited=false,rCtx,rCv,rRot=0,rExplode=false,rSpinning=false,rSpinIv=null,rHover=null;
+var chartInited={};var anI=false;
+
+/* LAUNCH */
+(function(){
+  var msgs=['Initialising analytics engine...','Loading global deal data...','Building radar systems...','Rendering capital flow maps...','Dashboard ready.'];
+  var mi=0,bar=document.getElementById('launch-bar'),pct=document.getElementById('launch-pct');
+  var iv=setInterval(function(){
+    if(mi<msgs.length){if(pct)pct.textContent=msgs[mi];if(bar)bar.style.width=Math.round((mi+1)/msgs.length*100)+'%';mi++;}
+    if(mi>=msgs.length)clearInterval(iv);
+  },620);
+  setTimeout(function(){
+    var ls=document.getElementById('launch'),mn=document.getElementById('main');
+    if(ls)ls.classList.add('gone');if(mn)mn.classList.add('vis');
+    initCharts();
+  },3800);
+})();
+
+/* CHART HELPER */
+function mkC(id,tp,data,opts){
+  var el=document.getElementById(id);if(!el)return null;
+  var ex=Chart.getChart(el);if(ex)ex.destroy();
+  var def={responsive:true,maintainAspectRatio:false,animation:{duration:700,easing:'easeOutQuart'},
+    plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',borderColor:'rgba(201,162,39,.28)',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:10,cornerRadius:7}}};
+  if(tp!=='pie'&&tp!=='doughnut'){def.scales={x:Object.assign({},XS),y:Object.assign({},YS)};}
+  merge(def,opts||{});
+  try{return new Chart(el.getContext('2d'),{type:tp,data:data,options:def});}
+  catch(e){console.warn('Chart error '+id,e);return null;}
+}
+function merge(t,s){
+  Object.keys(s).forEach(function(k){
+    if(s[k]&&typeof s[k]==='object'&&!Array.isArray(s[k])&&s[k]!==null){if(!t[k])t[k]={};merge(t[k],s[k]);}
+    else t[k]=s[k];
+  });
+}
+
+/* TAB SWITCH */
+function ST(id,btn){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('act');});
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('act');});
+  var el=document.getElementById('tab-'+id);if(el)el.classList.add('act');
+  if(btn)btn.classList.add('act');
+  if(!chartInited[id]){chartInited[id]=true;setTimeout(function(){initTab(id);},80);}
+  if(id==='ty')setTimeout(drawHubFlow,120);
+  if(id==='rd'&&!rInited){setTimeout(function(){initRadar();buildHeatmap();},120);}
+}
+function initTab(id){
+  var map={ev:initEv,ty:initTy,dv:function(){},pr:initPr,hw:initHw,an:initAn,mi:function(){},in:initIn,cs:initCs,esg:function(){}};
+  if(map[id])map[id]();
+}
+
+/* OVERVIEW */
+function initCharts(){
+  mkC('c-rev','bar',{
+    labels:['2020','2021','2022','2023','2024','2025','2026E'],
+    datasets:[
+      {label:'M&A',data:[18.4,27.3,22.1,19.8,24.6,26.8,29.4],backgroundColor:G.gold,borderRadius:3},
+      {label:'ECM',data:[16.2,22.8,11.2,14.4,21.3,23.8,26.2],backgroundColor:G.bl,borderRadius:3},
+      {label:'DCM',data:[25.1,28.6,21.4,24.7,27.1,28.4,29.8],backgroundColor:G.gr,borderRadius:3},
+      {label:'S&T',data:[21.8,24.1,26.3,22.8,16.4,17.2,8.8],backgroundColor:G.pu,borderRadius:3}
+    ]
+  },{plugins:{legend:LG},scales:{x:{stacked:true,grid:XS.grid,ticks:XS.ticks,border:XS.border},y:{stacked:true,grid:YS.grid,ticks:{color:'#475569',font:{size:10},callback:function(v){return '$'+v+'B'}},border:YS.border}}});
+  mkC('c-pie','doughnut',{
+    labels:['M&A','DCM','ECM','LevFin','Private Credit','Other'],
+    datasets:[{data:[29,31,18,10,8,4],backgroundColor:[G.gold,G.bl,G.gr,G.pu,G.tl,G.sv],borderWidth:2,borderColor:'#0f172a'}]
+  },{cutout:'64%',plugins:{legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{size:10},boxWidth:8,padding:9}},tooltip:{backgroundColor:'#1e293b',borderColor:'rgba(201,162,39,.28)',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:10,cornerRadius:7}}});
+  chartInited['ov']=true;
+}
+
+/* EVOLUTION */
+function initEv(){
+  mkC('c-hist','line',{
+    labels:['1985','1990','1995','2000','2005','2007','2008','2010','2015','2019','2020','2021','2022','2023','2024','2025','2026E'],
+    datasets:[{data:[10.2,16.8,22.4,48.5,54.1,78.3,35.8,42.4,58.7,65.2,62.8,89.4,64.2,67.8,82.4,89.2,94.2],
+      borderColor:G.gold,backgroundColor:'rgba(201,162,39,.06)',fill:true,tension:.4,pointBackgroundColor:G.gold,pointRadius:3,borderWidth:2}]
+  },{scales:{x:{grid:XS.grid,ticks:{color:'#475569',font:{size:9},maxRotation:45},border:XS.border},
+    y:{grid:YS.grid,ticks:{color:'#475569',font:{size:10},callback:function(v){return '$'+v+'B'}},border:YS.border}}});
+}
+
+/* TYPES */
+function initTy(){
+  mkC('c-div','bar',{
+    labels:['JPMorgan','Goldman','Morgan St.','BofA','Citi'],
+    datasets:[
+      {label:'M&A',data:[28,38,24,20,18],backgroundColor:G.gold,borderRadius:3},
+      {label:'ECM',data:[22,24,32,26,20],backgroundColor:G.bl,borderRadius:3},
+      {label:'DCM',data:[30,20,22,36,34],backgroundColor:G.gr,borderRadius:3},
+      {label:'S&T',data:[20,18,22,18,28],backgroundColor:G.pu,borderRadius:3}
+    ]
+  },{plugins:{legend:LG},scales:{x:{stacked:true,grid:XS.grid,ticks:XS.ticks,border:XS.border},y:{stacked:true,max:100,grid:YS.grid,ticks:{color:'#475569',font:{size:10},callback:function(v){return v+'%'}},border:YS.border}}});
+}
+
+/* HUB SPOKE */
+function drawHubFlow(){
+  var svg=document.getElementById('tflow-svg'),wrap=document.getElementById('tflow');
+  if(!svg||!wrap)return;
+  var rect=wrap.getBoundingClientRect(),W=rect.width,H=rect.height;
+  if(W<10||H<10)return;
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);svg.innerHTML='';
+  var hub=wrap.querySelector('.hub-node');if(!hub)return;
+  var hr=hub.getBoundingClientRect();
+  var cx=hr.left-rect.left+hr.width/2,cy=hr.top-rect.top+hr.height/2;
+  wrap.querySelectorAll('.hub-pulse').forEach(function(p){p.remove();});
+  wrap.querySelectorAll('.spoke').forEach(function(sp){
+    var r=sp.getBoundingClientRect();
+    var x=r.left-rect.left+r.width/2,y=r.top-rect.top+r.height/2;
+    var ln=document.createElementNS('http://www.w3.org/2000/svg','line');
+    ln.setAttribute('x1',cx);ln.setAttribute('y1',cy);ln.setAttribute('x2',x);ln.setAttribute('y2',y);
+    svg.appendChild(ln);
+    var pulse=document.createElement('div');pulse.className='hub-pulse';wrap.appendChild(pulse);
+    var dur=3200+Math.random()*1800,start=performance.now()+Math.random()*1200;
+    (function go(){function loop(t){var p=((t-start)%dur)/dur;if(p<0)p=0;pulse.style.left=(cx+(x-cx)*p-3.5)+'px';pulse.style.top=(cy+(y-cy)*p-3.5)+'px';pulse.style.opacity=(p<.1?p*10:p>.9?(1-p)*10:1);requestAnimationFrame(loop);}requestAnimationFrame(loop);})();
+  });
+}
+window.addEventListener('resize',function(){if(document.getElementById('tab-ty')&&document.getElementById('tab-ty').classList.contains('act'))drawHubFlow();});
+
+/* PROCESS */
+function initPr(){
+  mkC('c-val','bar',{
+    labels:['DCF','Comparable Comps','Precedent Trans.','LBO Analysis','Sum of Parts'],
+    datasets:[
+      {label:'Low',data:[820,950,1100,680,780],backgroundColor:'rgba(34,197,94,.18)',borderColor:G.gr,borderWidth:1,borderRadius:3},
+      {label:'Mid',data:[980,1120,1280,860,960],backgroundColor:'rgba(201,162,39,.52)',borderColor:G.gold,borderWidth:1,borderRadius:3},
+      {label:'High',data:[1180,1320,1490,1040,1180],backgroundColor:'rgba(240,82,82,.18)',borderColor:G.rd,borderWidth:1,borderRadius:3}
+    ]
+  },{indexAxis:'y',plugins:{legend:LG},scales:{x:{grid:XS.grid,ticks:{color:'#475569',font:{size:10},callback:function(v){return '$'+v+'M'}},border:XS.border},y:{grid:YS.grid,ticks:YS.ticks,border:YS.border}}});
+}
+
+/* HOW IT WORKS */
+function initHw(){
+  mkC('c-rmod','doughnut',{
+    labels:['Advisory Fees','Underwriting','Sales & Trading','Financing','Private Credit','Other'],
+    datasets:[{data:[26,20,28,12,10,4],backgroundColor:[G.gold,G.bl,G.gr,G.pu,G.tl,G.sv],borderWidth:2,borderColor:'#0f172a'}]
+  },{cutout:'60%',plugins:{legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{size:10},boxWidth:8,padding:9}},tooltip:{backgroundColor:'#1e293b',borderColor:'rgba(201,162,39,.28)',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:10,cornerRadius:7}}});
+}
+
+/* ANALYTICS */
+function initAn(){
+  if(anI)return;anI=true;
+  mkC('c-mna','bar',{
+    labels:['2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026E'],
+    datasets:[{data:[2.4,2.8,2.3,3.2,3.8,5.0,4.3,4.0,4.1,3.7,2.8,5.9,3.6,2.9,3.2,3.5,3.8],
+      backgroundColor:function(c){var v=c.raw;return v>=5?G.gold:v>=4?'rgba(201,162,39,.55)':'rgba(201,162,39,.28)'},borderRadius:3}]
+  },{scales:{x:{grid:XS.grid,ticks:{color:'#475569',font:{size:9}},border:XS.border},y:{grid:YS.grid,ticks:{color:'#475569',font:{size:10},callback:function(v){return '$'+v+'T'}},border:YS.border}}});
+  mkC('c-ipo','line',{
+    labels:['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026E'],
+    datasets:[
+      {label:'IPO Count',data:[1042,984,1624,1422,1108,1415,2388,1125,1298,1420,1540,1680],borderColor:G.bl,backgroundColor:'rgba(59,130,246,.07)',fill:true,tension:.4,yAxisID:'y',pointBackgroundColor:G.bl,pointRadius:3,borderWidth:2},
+      {label:'Proceeds $B',data:[198,134,188,204,198,268,594,170,120,158,188,224],borderColor:G.gold,tension:.4,yAxisID:'y1',pointBackgroundColor:G.gold,pointRadius:3,borderWidth:2,borderDash:[4,3]}
+    ]
+  },{plugins:{legend:LG},scales:{x:{grid:XS.grid,ticks:{color:'#475569',font:{size:9}},border:XS.border},y:{grid:YS.grid,ticks:YS.ticks,border:YS.border},y1:{position:'right',grid:{drawOnChartArea:false},ticks:{color:'#475569',font:{size:10},callback:function(v){return '$'+v+'B'}},border:{color:'transparent'}}}});
+  mkC('c-banks','bar',{
+    labels:['JPMorgan','Goldman','Morgan St.','BofA','Citi','Barclays','Deutsche','UBS'],
+    datasets:[
+      {label:'2025',data:[7.8,6.4,5.4,5.0,4.2,2.8,2.2,1.9],backgroundColor:'rgba(148,163,184,.28)',borderRadius:3},
+      {label:'2026E',data:[8.4,7.1,5.8,5.3,4.4,3.0,2.4,2.1],backgroundColor:function(c){return c.dataIndex===0?G.gold:c.dataIndex<=2?G.bl:'rgba(201,162,39,.35)'},borderRadius:3}
+    ]
+  },{plugins:{legend:LG},scales:{x:{grid:XS.grid,ticks:XS.ticks,border:XS.border},y:{grid:YS.grid,ticks:{color:'#475569',font:{size:10},callback:function(v){return '$'+v+'B'}},border:YS.border}}});
+  mkC('c-reg','doughnut',{
+    labels:['North America','Europe','Asia Pacific','India','Middle East','LatAm'],
+    datasets:[{data:[42,22,20,8,5,3],backgroundColor:[G.gold,G.bl,G.gr,G.am,G.pu,G.sv],borderWidth:2,borderColor:'#0f172a'}]
+  },{cutout:'60%',plugins:{legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{size:10},boxWidth:8,padding:9}},tooltip:{backgroundColor:'#1e293b',borderColor:'rgba(201,162,39,.28)',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:10,cornerRadius:7}}});
+  mkC('c-em','line',{
+    labels:['2018','2019','2020','2021','2022','2023','2024','2025','2026E'],
+    datasets:[
+      {label:'India',data:[3.8,4.4,5.1,7.2,8.9,11.4,14.8,16.4,18.2],borderColor:G.am,backgroundColor:'rgba(251,146,60,.07)',fill:true,tension:.4,borderWidth:2.5,pointBackgroundColor:G.am,pointRadius:4},
+      {label:'China',data:[12.4,13.8,14.2,18.9,14.4,12.8,13.1,12.8,13.4],borderColor:G.rd,tension:.4,borderWidth:2,pointBackgroundColor:G.rd,pointRadius:3},
+      {label:'SE Asia',data:[6.2,6.8,5.9,8.4,7.2,7.8,8.4,9.2,10.1],borderColor:G.gr,tension:.4,borderWidth:2,pointBackgroundColor:G.gr,pointRadius:3}
+    ]
+  },{plugins:{legend:LG},scales:{x:{grid:XS.grid,ticks:{color:'#475569',font:{size:9}},border:XS.border},y:{grid:YS.grid,ticks:{color:'#475569',font:{size:10},callback:function(v){return '$'+v+'B'}},border:YS.border}}});
+  mkC('c-sec','bar',{
+    labels:['Technology & AI','Healthcare','Financials','Energy & Green','Industrials','Consumer','Real Estate'],
+    datasets:[{data:[1124,448,412,334,292,228,186],backgroundColor:[G.bl,G.gr,G.gold,G.tl,G.pu,G.am,G.sv],borderRadius:3}]
+  },{indexAxis:'y',scales:{x:{grid:XS.grid,ticks:{color:'#475569',font:{size:10},callback:function(v){return '$'+v+'B'}},border:XS.border},y:{grid:YS.grid,ticks:YS.ticks,border:YS.border}}});
+  mkC('c-tech','line',{
+    labels:['2019','2020','2021','2022','2023','2024','2025','2026E'],
+    datasets:[
+      {label:'Tech M&A $B',data:[480,382,824,612,398,892,1044,1124],borderColor:G.bl,backgroundColor:'rgba(59,130,246,.07)',fill:true,tension:.4,borderWidth:2.5,pointBackgroundColor:G.bl,pointRadius:4},
+      {label:'AI Subset $B',data:[8,12,42,88,124,284,488,620],borderColor:G.gold,borderDash:[4,3],tension:.4,borderWidth:2,pointBackgroundColor:G.gold,pointRadius:4}
+    ]
+  },{plugins:{legend:LG},scales:{x:{grid:XS.grid,ticks:{color:'#475569',font:{size:9}},border:XS.border},y:{grid:YS.grid,ticks:{color:'#475569',font:{size:10},callback:function(v){return '$'+v+'B'}},border:YS.border}}});
+}
+function switchAn(t,btn){
+  document.querySelectorAll('#tab-an .toggle-btn').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');
+  ['global','regional','sector'].forEach(function(x){var el=document.getElementById('an-'+x);if(el)el.style.display=(x===t?'block':'none');});
+  if(!anI)initAn();
+}
+
+/* INDIA */
+function initIn(){
+  mkC('c-ima','bar',{
+    labels:['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026E'],
+    datasets:[{data:[38.4,42.8,52.2,84.4,58.8,42.4,92.8,88.4,72.8,98.4,108.2,112.4],
+      backgroundColor:function(c){var v=c.raw;return v>=100?G.am:v>=80?'rgba(251,146,60,.65)':'rgba(251,146,60,.32)'},borderRadius:3}]
+  },{scales:{x:{grid:XS.grid,ticks:{color:'#475569',font:{size:9}},border:XS.border},y:{grid:YS.grid,ticks:{color:'#475569',font:{size:10},callback:function(v){return '$'+v+'B'}},border:YS.border}}});
+  mkC('c-iipo','line',{
+    labels:['2018','2019','2020','2021','2022','2023','2024','2025','2026E'],
+    datasets:[
+      {label:'IPO Count',data:[24,16,15,63,40,57,92,182,420],borderColor:G.am,backgroundColor:'rgba(251,146,60,.07)',fill:true,tension:.4,yAxisID:'y',pointBackgroundColor:G.am,pointRadius:4,borderWidth:2},
+      {label:'Proceeds $B',data:[3.4,2.8,2.4,10.2,7.4,7.2,14.8,22.4,29.8],borderColor:G.gold,borderDash:[4,3],tension:.4,yAxisID:'y1',pointBackgroundColor:G.gold,pointRadius:4,borderWidth:2}
+    ]
+  },{plugins:{legend:LG},scales:{x:{grid:XS.grid,ticks:{color:'#475569',font:{size:9}},border:XS.border},y:{grid:YS.grid,ticks:YS.ticks,border:YS.border},y1:{position:'right',grid:{drawOnChartArea:false},ticks:{color:'#475569',font:{size:10},callback:function(v){return '$'+v+'B'}},border:{color:'transparent'}}}});
+  mkC('c-isec','bar',{
+    labels:['Technology','Financial Svcs','Infrastructure','Healthcare','Energy & Green','Consumer','Real Estate'],
+    datasets:[{data:[32.4,28.8,22.2,14.4,11.8,8.2,7.4],backgroundColor:[G.bl,G.am,G.gold,G.gr,G.tl,G.pu,G.sv],borderRadius:3}]
+  },{indexAxis:'y',scales:{x:{grid:XS.grid,ticks:{color:'#475569',font:{size:10},callback:function(v){return '$'+v+'B'}},border:XS.border},y:{grid:YS.grid,ticks:YS.ticks,border:YS.border}}});
+  mkC('c-ivg','line',{
+    labels:['2018','2019','2020','2021','2022','2023','2024','2025','2026E'],
+    datasets:[
+      {label:'India IB Index',data:[100,116,134,188,234,300,390,432,480],borderColor:G.am,backgroundColor:'rgba(251,146,60,.07)',fill:true,tension:.4,borderWidth:2.5,pointBackgroundColor:G.am,pointRadius:4},
+      {label:'Global IB Index',data:[100,106,110,140,122,128,142,152,162],borderColor:G.sv,backgroundColor:'rgba(148,163,184,.05)',fill:true,tension:.4,borderDash:[4,3],borderWidth:2,pointBackgroundColor:G.sv,pointRadius:3}
+    ]
+  },{plugins:{legend:LG},scales:{x:{grid:XS.grid,ticks:{color:'#475569',font:{size:9}},border:XS.border},y:{grid:YS.grid,ticks:YS.ticks,border:YS.border}}});
+}
+
+/* CASE STUDIES */
+function initCs(){
+  mkC('c-cases','bar',{
+    labels:['HDFC Merger','Twitter LBO','Reliance Rights','Aramco IPO','MSFT-ATVI','Adani FPO'],
+    datasets:[{data:[40,44,7.1,25.6,68.7,2.4],backgroundColor:[G.am,G.rd,G.am,G.gold,G.bl,G.am],borderRadius:4}]
+  },{scales:{x:{grid:XS.grid,ticks:XS.ticks,border:XS.border},y:{grid:YS.grid,ticks:{color:'#475569',font:{size:10},callback:function(v){return '$'+v+'B'}},border:YS.border}}});
+}
+
+/* RADAR */
+var RB=[{name:'JPMorgan',color:'#c9a227',alpha:'rgba(201,162,39,0.13)',active:true},{name:'Goldman Sachs',color:'#3b82f6',alpha:'rgba(59,130,246,0.11)',active:true},{name:'Morgan Stanley',color:'#22c55e',alpha:'rgba(34,197,94,0.10)',active:true},{name:'BofA',color:'#a78bfa',alpha:'rgba(167,139,250,0.10)',active:true},{name:'Citigroup',color:'#fb923c',alpha:'rgba(251,146,60,0.10)',active:false}];
+var RA=['M&A Advisory','ECM','DCM','Sales & Trading','Research','ESG','AI / Digital','Client Coverage'];
+var RD=[[92,88,95,90,85,82,88,94],[98,90,82,94,96,78,84,92],[85,96,80,86,88,86,80,90],[82,84,92,82,76,80,74,88],[78,80,88,84,72,74,70,82]];
+
+function initRadar(){
+  if(rInited)return;rInited=true;
+  rCv=document.getElementById('rcanvas');if(!rCv)return;
+  rCtx=rCv.getContext('2d');
+  rCv.addEventListener('mousemove',onRM);
+  rCv.addEventListener('mouseleave',function(){rHover=null;var tt=document.getElementById('rtt');if(tt)tt.style.opacity='0';clrHov();drawR();});
+  drawR();buildHeatmap();
+}
+function drawR(){
+  if(!rCtx||!rCv)return;
+  var W=rCv.width,H=rCv.height,cx=W/2,cy=H/2-8;
+  var r=Math.min(W,H)*0.33,n=RA.length,off=rRot*Math.PI/180,ex=rExplode?1.08:1.0;
+  rCtx.clearRect(0,0,W,H);
+  for(var ring=1;ring<=5;ring++){
+    var rr=r*(ring/5);rCtx.beginPath();
+    for(var i=0;i<=n;i++){var a=(2*Math.PI*i/n)-Math.PI/2+off;rCtx[i===0?'moveTo':'lineTo'](cx+rr*Math.cos(a),cy+rr*Math.sin(a));}
+    rCtx.closePath();rCtx.strokeStyle='rgba(148,163,184,.09)';rCtx.lineWidth=.5;rCtx.stroke();
+    rCtx.fillStyle='rgba(71,85,105,.55)';rCtx.font='9px Inter,sans-serif';rCtx.textAlign='center';
+    rCtx.fillText(ring*20,cx+rr*Math.cos(off-Math.PI/2)-4,cy+rr*Math.sin(off-Math.PI/2)-3);
+  }
+  for(var i=0;i<n;i++){
+    var a=(2*Math.PI*i/n)-Math.PI/2+off;
+    rCtx.beginPath();rCtx.moveTo(cx,cy);rCtx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+    rCtx.strokeStyle='rgba(148,163,184,.14)';rCtx.lineWidth=.8;rCtx.stroke();
+    var lx=cx+(r+26)*Math.cos(a),ly=cy+(r+26)*Math.sin(a);
+    var hAx=rHover&&rHover.axis===i;
+    rCtx.fillStyle=hAx?G.gold:'#94a3b8';rCtx.font=(hAx?'600 ':'')+'9.5px Inter,sans-serif';
+    rCtx.textAlign='center';rCtx.textBaseline='middle';rCtx.fillText(RA[i],lx,ly);
+  }
+  RB.forEach(function(bk,bi){
+    if(!bk.active)return;
+    var pts=[];
+    for(var i=0;i<n;i++){var a=(2*Math.PI*i/n)-Math.PI/2+off;var val=RD[bi][i]/100*r*ex*(rHover&&rHover.bankIdx===bi?1.04:1);pts.push({x:cx+val*Math.cos(a),y:cy+val*Math.sin(a)});}
+    rCtx.beginPath();pts.forEach(function(p,i){rCtx[i===0?'moveTo':'lineTo'](p.x,p.y);});rCtx.closePath();
+    var hB=rHover&&rHover.bankIdx===bi;
+    rCtx.fillStyle=hB?bk.alpha.replace(/[\d.]+\)$/,'0.26)'):bk.alpha;rCtx.fill();
+    rCtx.strokeStyle=bk.color;rCtx.lineWidth=hB?2.5:1.5;rCtx.stroke();
+    pts.forEach(function(p,i){
+      var hP=rHover&&rHover.bankIdx===bi&&rHover.axis===i;
+      rCtx.beginPath();rCtx.arc(p.x,p.y,hP?6:3.5,0,Math.PI*2);rCtx.fillStyle=bk.color;rCtx.fill();
+      if(hP){rCtx.strokeStyle='rgba(255,255,255,.28)';rCtx.lineWidth=1.5;rCtx.stroke();}
+    });
+  });
+  if(rHover){
+    var a=(2*Math.PI*rHover.axis/n)-Math.PI/2+off;
+    rCtx.beginPath();rCtx.moveTo(cx,cy);rCtx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+    rCtx.strokeStyle='rgba(201,162,39,.45)';rCtx.lineWidth=1.5;rCtx.setLineDash([4,3]);rCtx.stroke();rCtx.setLineDash([]);
+  }
+  rCtx.beginPath();rCtx.arc(cx,cy,4,0,Math.PI*2);rCtx.fillStyle='rgba(201,162,39,.65)';rCtx.fill();
+}
+function onRM(e){
+  if(!rCv)return;
+  var rect=rCv.getBoundingClientRect();
+  var mx=(e.clientX-rect.left)*(rCv.width/rect.width),my=(e.clientY-rect.top)*(rCv.height/rect.height);
+  var cx=rCv.width/2,cy=rCv.height/2-8,r=Math.min(rCv.width,rCv.height)*0.33,n=RA.length,off=rRot*Math.PI/180;
+  var best=null,bestD=999;
+  RB.forEach(function(bk,bi){
+    if(!bk.active)return;
+    for(var i=0;i<n;i++){
+      var a=(2*Math.PI*i/n)-Math.PI/2+off,val=RD[bi][i]/100*r;
+      var d=Math.sqrt(Math.pow(mx-(cx+val*Math.cos(a)),2)+Math.pow(my-(cy+val*Math.sin(a)),2));
+      if(d<bestD){bestD=d;best={bankIdx:bi,axis:i};}
+    }
+  });
+  if(bestD<18&&best){
+    rHover=best;var sc=RD[best.bankIdx][best.axis];
+    var tt=document.getElementById('rtt');
+    if(tt){tt.style.opacity='1';tt.style.left=(e.offsetX+13)+'px';tt.style.top=(e.offsetY-10)+'px';tt.textContent=RB[best.bankIdx].name+' · '+RA[best.axis]+': '+sc+'/100';}
+    var hs=document.getElementById('hov-score');if(hs)hs.textContent=sc+'/100';
+    var hl=document.getElementById('hov-label');if(hl)hl.textContent=RB[best.bankIdx].name+' · '+RA[best.axis];
+    var tb=document.getElementById('top-bank');if(tb)tb.textContent=RB[best.bankIdx].name;
+    var td=document.getElementById('top-dim');if(td)td.textContent=RA[best.axis]+': '+sc+'/100';
+  }else{rHover=null;var tt=document.getElementById('rtt');if(tt)tt.style.opacity='0';clrHov();}
+  drawR();
+}
+function clrHov(){var hs=document.getElementById('hov-score');if(hs)hs.textContent='--';var hl=document.getElementById('hov-label');if(hl)hl.textContent='Hover a radar point';}
+function rtoggle(idx,btn){RB[idx].active=!RB[idx].active;btn.classList.toggle('on',RB[idx].active);drawR();}
+function ranim(){var s=rRot,st=null;function step(ts){if(!st)st=ts;var p=Math.min((ts-st)/2400,1);rRot=s+360*p;var rv=document.getElementById('r-rot');if(rv)rv.value=Math.round(rRot%360);var rl=document.getElementById('r-rot-val');if(rl)rl.textContent=Math.round(rRot%360)+' deg';drawR();if(p<1)requestAnimationFrame(step);else rRot=rRot%360;}requestAnimationFrame(step);}
+function rreset(){rRot=0;rExplode=false;var rv=document.getElementById('r-rot');if(rv)rv.value=0;var rl=document.getElementById('r-rot-val');if(rl)rl.textContent='0 deg';RB.forEach(function(b){b.active=true;});document.querySelectorAll('#tab-rd .radar-btn').forEach(function(b){var skip=['Animate','Reset','Auto Spin','Explode View'];if(skip.indexOf(b.textContent)===-1)b.classList.add('on');});drawR();}
+function rexplode(){rExplode=!rExplode;drawR();}
+function rspin(){rSpinning=!rSpinning;var btn=document.getElementById('spinbtn');if(rSpinning){if(btn)btn.textContent='Stop Spin';rSpinIv=setInterval(function(){rRot=(rRot+.9)%360;var rv=document.getElementById('r-rot');if(rv)rv.value=Math.round(rRot);var rl=document.getElementById('r-rot-val');if(rl)rl.textContent=Math.round(rRot)+' deg';drawR();},28);}else{if(btn)btn.textContent='Auto Spin';clearInterval(rSpinIv);}}
+function setRot(v){rRot=parseInt(v);var rl=document.getElementById('r-rot-val');if(rl)rl.textContent=v+' deg';drawR();}
+function buildHeatmap(){
+  var banks=['JPMorgan','Goldman','Morgan St.','BofA','Citi'];
+  var products=['M&A','ECM','DCM','S&T','Research','ESG','AI','Coverage'];
+  function gc(v){return v>=93?'rgba(201,162,39,.68)':v>=85?'rgba(201,162,39,.42)':v>=78?'rgba(59,130,246,.34)':v>=70?'rgba(59,130,246,.18)':'rgba(148,163,184,.1)';}
+  var h='<table style="width:100%;border-collapse:collapse"><tr><th style="padding:6px 8px;font-size:9px;color:#475569;font-weight:700;text-transform:uppercase;text-align:left"></th>';
+  products.forEach(function(p){h+='<th style="padding:6px 3px;font-size:8.5px;color:#475569;font-weight:700;text-transform:uppercase;text-align:center">'+p+'</th>';});h+='</tr>';
+  banks.forEach(function(bank,bi){
+    h+='<tr><td style="padding:5px 8px;font-size:11.5px;font-weight:600;color:#94a3b8;white-space:nowrap">'+bank+'</td>';
+    RD[bi].forEach(function(v){h+='<td style="padding:2px"><div style="background:'+gc(v)+';border-radius:5px;padding:5px 2px;text-align:center;font-size:11.5px;font-weight:700;color:#e2e8f0;font-family:Georgia,serif">'+v+'</div></td>';});
+    h+='</tr>';
+  });h+='</table>';
+  var hm=document.getElementById('hm');if(hm)hm.innerHTML=h;
+}
+
+chartInited['ov']=false;
+
+/* ── GLOSSARY ────────────────────────────────────────────────────── */
+var GL_TERMS = [
+  /* CORE CONCEPTS */
+  {cat:'core', term:'Investment Bank', short:'A financial institution that raises capital, advises on deals, and facilitates transactions between companies and investors.', detail:'Unlike a commercial bank that takes deposits and gives loans, an investment bank connects those who need capital with those who have it. It earns fees rather than interest.'},
+  {cat:'core', term:'Capital Markets', short:'The system through which companies and governments raise long-term funds by issuing stocks and bonds to investors.', detail:'Primary capital markets handle new issuances. Secondary markets handle the trading of already-issued securities. Investment banks operate across both.'},
+  {cat:'core', term:'Underwriting', short:'The process by which a bank guarantees to purchase securities from an issuer and resell them to investors.', detail:'By underwriting, the bank takes on the risk that it may not be able to sell the securities at the expected price. The gross spread between the guaranteed price and the sale price compensates the bank for this risk.'},
+  {cat:'core', term:'Mandate', short:'The formal agreement through which a company appoints an investment bank to advise on or execute a specific transaction.', detail:'Winning a mandate means the bank has been selected over its competitors to lead the deal. Senior Managing Directors spend years cultivating relationships specifically to win mandates.'},
+  {cat:'core', term:'Pitch Book', short:'A presentation prepared by an investment bank to propose a deal idea or win a client mandate.', detail:'A pitch book typically includes a market overview, strategic rationale, preliminary valuation, proposed deal structure, and the bank\'s credentials in similar transactions. In 2026, generative AI drafts the first version in hours.'},
+  {cat:'core', term:'League Table', short:'A ranking of investment banks by deal volume or value, published by Bloomberg and Refinitiv each quarter.', detail:'League table position directly influences a bank\'s ability to win future mandates. A top-three position in M&A or ECM is a competitive advantage that takes years to build and can be lost quickly.'},
+  {cat:'core', term:'Fee Pool', short:'The total advisory and underwriting fees available in a specific market, product, or region in a given period.', detail:'When bankers talk about "capturing fee pool," they mean winning a share of the total commissions generated by all deals in that category. India\'s fee pool has grown at 24% per annum since 2018.'},
+  {cat:'core', term:'Bulge Bracket', short:'The world\'s largest and most prestigious investment banks, including JPMorgan, Goldman Sachs, and Morgan Stanley.', detail:'Bulge bracket banks offer the full spectrum of services across advisory, capital markets, trading, and asset management. Their balance sheet strength lets them commit financing on the largest deals.'},
+  {cat:'core', term:'Boutique Bank', short:'A smaller investment bank that focuses exclusively on advisory without trading operations or balance sheet risk.', detail:'Examples include Lazard, Evercore, and Centerview globally, and Avendus and JM Financial in India. Boutiques attract clients who want conflict-free, senior-only advisory on sensitive strategic transactions.'},
+  {cat:'core', term:'Chinese Wall', short:'A mandatory information barrier inside a bank that prevents the advisory division from sharing confidential deal information with the trading division.', detail:'Without Chinese Walls, a banker advising on an acquisition could tip off the trading desk to buy the target\'s shares before announcement. This would be insider trading, a criminal offence regulated by SEBI, the SEC, and IOSCO.'},
+  {cat:'core', term:'Managing Director (MD)', short:'The most senior client-facing banker, responsible for originating mandates and owning CEO and CFO level relationships.', detail:'An MD\'s compensation is directly tied to the revenue they bring in. The journey to MD typically takes 12 or more years and requires a combination of technical excellence, deal experience, and relationship-building capability.'},
+  {cat:'core', term:'Dry Powder', short:'Capital that has been committed to a fund but not yet deployed into investments.', detail:'Global private equity dry powder stood at approximately $3.9T in 2026, a record high. This creates sustained demand for M&A advisory and leveraged finance services, as fund managers need to deploy this capital within their fund timelines.'},
+
+  /* DEALS AND M&A */
+  {cat:'deals', term:'Merger', short:'A transaction in which two companies combine to form a single new entity, typically as equals.', detail:'In a true merger, both companies\' shares are cancelled and replaced with shares of the new combined entity. The HDFC and HDFC Bank combination in 2023 is a landmark Indian example, creating one of the world\'s ten largest banks by market capitalisation.'},
+  {cat:'deals', term:'Acquisition', short:'A transaction in which one company purchases another, with the buyer taking control of the target.', detail:'The acquirer may purchase the target\'s shares or assets. Microsoft\'s acquisition of Activision Blizzard for $68.7B in 2023 is a recent example, taking 20 months to close due to global antitrust review.'},
+  {cat:'deals', term:'Due Diligence', short:'The comprehensive investigation of a target company before a deal is finalised, covering financial, legal, tax, and ESG matters.', detail:'Due diligence is conducted through a Virtual Data Room where thousands of documents are reviewed. In 2026, AI tools analyse contracts and flag risks, reducing timelines by approximately 40% compared to manual processes.'},
+  {cat:'deals', term:'Confidential Information Memorandum (CIM)', short:'A detailed document prepared by the seller\'s bank that describes the business being sold and is shared with qualified potential buyers.', detail:'Also called the Information Memorandum or IM, this document is only shared after potential buyers sign a Non-Disclosure Agreement. It forms the basis for buyers to make an indicative offer.'},
+  {cat:'deals', term:'Non-Disclosure Agreement (NDA)', short:'A legal contract that prevents parties from sharing confidential information received during a deal process.', detail:'Every potential buyer in an M&A process signs an NDA before receiving the CIM. Breach of an NDA can result in legal liability and permanent exclusion from future deal processes.'},
+  {cat:'deals', term:'Hostile Takeover', short:'An acquisition attempt made directly to a company\'s shareholders without the approval or support of the target\'s board of directors.', detail:'Hostile takeovers were common in the 1980s LBO era. Investment banks advise both attackers and defenders. Defensive tactics include poison pills, white knight strategies, and share buybacks.'},
+  {cat:'deals', term:'Leveraged Buyout (LBO)', short:'The acquisition of a company using a significant amount of borrowed money, where the acquired company\'s assets and cash flows serve as collateral for the debt.', detail:'Private equity firms use LBOs to acquire businesses with 60 to 80% debt and 20 to 40% equity. They aim to improve operations, repay debt over 3 to 7 years, and sell at a profit. The Twitter acquisition for $44B is a recent LBO example where the $13B in bank debt could not be distributed.'},
+  {cat:'deals', term:'Hung Bridge Loan', short:'A bridge loan that a bank committed to finance a deal but cannot sell to other investors because market conditions deteriorated.', detail:'When a bank underwrites leveraged buyout financing, it commits to provide the debt regardless of market conditions. If investor appetite disappears, the bank is stuck holding the loan at a loss. The Twitter LBO left several banks with hung bridges that were still carried at discounts in 2026.'},
+  {cat:'deals', term:'Synergies', short:'The additional value created when two merged companies together are worth more than they would be separately.', detail:'Cost synergies come from eliminating duplicate functions, office space, or headcount. Revenue synergies come from cross-selling products or accessing new markets. Acquirers often pay a premium based on projected synergies that must then be delivered during integration.'},
+  {cat:'deals', term:'Fairness Opinion', short:'A formal written opinion from an independent investment bank confirming that a transaction is financially fair to the shareholders being advised.', detail:'Boards commission fairness opinions to demonstrate they fulfilled their fiduciary duty when approving a major transaction. They carry legal weight and are disclosed in regulatory filings. In India, SEBI mandates specific fairness opinion disclosures for related-party transactions and open offers.'},
+  {cat:'deals', term:'Control Premium', short:'The additional amount a buyer pays above a company\'s current market price to gain a controlling stake.', detail:'Control premiums typically range from 20 to 40% above the undisturbed share price. The premium reflects the value of being able to control strategic decisions, access synergies, and realise the company\'s full potential as an owner.'},
+
+  /* CAPITAL MARKETS */
+  {cat:'markets', term:'Initial Public Offering (IPO)', short:'The first time a private company sells its shares to the public on a stock exchange.', detail:'An IPO raises capital for the company while giving early investors and founders an exit. The bank underwriting the IPO builds an order book during a roadshow, sets the final price, and distributes shares. In India, SEBI must approve the Draft Red Herring Prospectus before an IPO can proceed.'},
+  {cat:'markets', term:'Follow-on Public Offering (FPO)', short:'A share issuance by a company that is already publicly listed, used to raise additional capital from existing public markets.', detail:'FPOs are faster and cheaper than IPOs because the company is already known to investors. The Adani Group FPO of $2.4B in 2023 was withdrawn mid-process after a short-seller report caused the stock to fall sharply.'},
+  {cat:'markets', term:'Rights Issue', short:'An offering that gives existing shareholders the right to buy additional shares at a discount before they are offered to new investors.', detail:'Rights issues reward loyal shareholders with the first opportunity to participate. Reliance Industries raised $7.1B through a rights issue in 2020 that was subscribed at 101%, using the proceeds to become debt-free.'},
+  {cat:'markets', term:'Qualified Institutional Placement (QIP)', short:'A capital raising mechanism unique to India that allows listed companies to issue shares to institutional investors without a full public offering.', detail:'QIPs are faster than FPOs and avoid the SEBI registration process for retail investors. They are widely used by Indian banks and infrastructure companies to quickly raise growth capital from domestic mutual funds, insurance companies, and foreign institutional investors.'},
+  {cat:'markets', term:'Draft Red Herring Prospectus (DRHP)', short:'The preliminary document filed with SEBI by a company planning an IPO in India, containing full disclosure of the business and financials.', detail:'The DRHP is the Indian equivalent of the S-1 in the United States. It must include audited financials, risk factors, details of the promoter group, use of proceeds, and related-party transactions. SEBI reviews and issues observations before the company can proceed to the final IPO.'},
+  {cat:'markets', term:'Book Building', short:'The process by which an investment bank determines the demand for an IPO by collecting bids from institutional investors at various price points.', detail:'During the roadshow, investors indicate how many shares they want and at what price. The bank uses this data to set the final offer price and allocate shares. Oversubscription means demand exceeded supply, a strong market signal.'},
+  {cat:'markets', term:'Bookrunner', short:'The lead investment bank responsible for managing the order book, pricing, and distribution of a securities offering.', detail:'The bookrunner receives the largest share of the underwriting fees, typically 40 to 50% of the gross spread on an IPO. Co-managers and co-bookrunners receive smaller allocations and play supporting distribution roles.'},
+  {cat:'markets', term:'Greenshoe Option', short:'A provision in an underwriting agreement that allows the bookrunner to issue up to 15% more shares than originally planned if demand is exceptionally strong.', detail:'Named after Green Shoe Manufacturing, the first company to use this mechanism. The greenshoe helps stabilise the share price in the weeks following the IPO by allowing the bank to buy back shares in the market if the price falls below the offer price.'},
+  {cat:'markets', term:'Private Credit', short:'Direct lending to companies by non-bank lenders such as private debt funds, bypassing public bond markets entirely.', detail:'Private credit has grown to $2.8T in global assets under management in 2026, making it one of the fastest-growing areas in finance. Investment banks act as originate-and-distribute partners, co-originating loans with private credit funds and sharing economics rather than competing directly.'},
+  {cat:'markets', term:'Debt Capital Markets (DCM)', short:'The division of an investment bank that helps companies and governments raise money by issuing bonds, notes, and other debt instruments.', detail:'DCM is the largest IB product by volume at an estimated $9.4T globally in 2026. Investment-grade bond fees have compressed to 15 to 40 basis points as competition has intensified. High-yield bonds command higher fees of 1.5 to 2.5%.'},
+  {cat:'markets', term:'High Yield Bond', short:'A bond issued by a company with a credit rating below investment grade, offering a higher interest rate to compensate investors for the greater risk of default.', detail:'Also called junk bonds. High yield bonds are a key financing tool for private equity leveraged buyouts. The high yield market was pioneered by Michael Milken at Drexel Burnham Lambert in the 1980s and is now a mainstream $1T+ global market.'},
+
+  /* VALUATION */
+  {cat:'valuation', term:'Enterprise Value (EV)', short:'The total value of a business, including both equity and debt, minus any cash held by the company.', detail:'EV = Market Capitalisation + Total Debt minus Cash. It represents what it would cost to buy the entire business outright. EV is used rather than market cap when comparing companies with different capital structures because it is capital-structure-neutral.'},
+  {cat:'valuation', term:'EBITDA', short:'Earnings Before Interest, Taxes, Depreciation, and Amortisation. A measure of a company\'s core operating profitability.', detail:'EBITDA is widely used in investment banking because it approximates operating cash flow and allows comparison across companies with different tax structures or depreciation policies. The EV/EBITDA multiple is one of the most common valuation benchmarks in M&A.'},
+  {cat:'valuation', term:'EV/EBITDA Multiple', short:'A valuation ratio that compares a company\'s total value to its operating earnings, used to assess whether a business is cheap or expensive relative to peers.', detail:'If comparable companies trade at 12 times EBITDA and a target generates $100M in EBITDA, a banker would estimate enterprise value at approximately $1.2B. Higher multiples indicate higher expected growth or better quality businesses.'},
+  {cat:'valuation', term:'Discounted Cash Flow (DCF)', short:'A valuation method that estimates a company\'s value by projecting its future cash flows and discounting them back to today using a risk-adjusted rate.', detail:'DCF is the most fundamental valuation method because it is based on the intrinsic economics of the business rather than what the market is paying for similar companies. It is also the most sensitive to assumptions. Small changes in the discount rate or growth rate can move the valuation by billions.'},
+  {cat:'valuation', term:'Weighted Average Cost of Capital (WACC)', short:'The blended cost of a company\'s financing, combining the cost of equity and the after-tax cost of debt, weighted by their proportions in the capital structure.', detail:'WACC is used as the discount rate in a DCF analysis. A higher WACC means future cash flows are worth less today. A company with high debt levels, high risk, or operating in a volatile industry will have a higher WACC than a stable, low-debt business.'},
+  {cat:'valuation', term:'Precedent Transactions', short:'A valuation method that uses multiples paid in past M&A deals for similar companies to estimate the value of the business being analysed.', detail:'Precedent transaction multiples are typically higher than comparable company multiples because they include a control premium, the extra amount paid to own the whole business rather than just a minority stake. This makes them most relevant in M&A contexts.'},
+  {cat:'valuation', term:'Football Field Chart', short:'A visual summary of valuation that shows the range of values produced by multiple methods side by side, allowing comparison across methodologies.', detail:'The name comes from the visual appearance of the chart, which shows horizontal bars of varying length like yard lines on a football field. The zone where all methods overlap represents the most defensible valuation range and forms the basis for deal price negotiations.'},
+  {cat:'valuation', term:'IRR (Internal Rate of Return)', short:'The annual percentage return generated by an investment, used by private equity firms to measure the performance of a leveraged buyout.', detail:'Private equity firms typically target an IRR of 20% or more over a 3 to 7 year holding period. Higher leverage amplifies IRR if the business performs well, but also amplifies losses if it underperforms. IRR is the primary metric used to evaluate fund performance and manager compensation.'},
+  {cat:'valuation', term:'WACC vs Discount Rate', short:'WACC is the specific discount rate used in a DCF when valuing an entire company. The discount rate more broadly refers to the rate applied to any future cash flow to determine its present value.', detail:'In practice, analysts use WACC as the discount rate for free cash flow to the firm in a standard DCF. For equity valuation they may use the cost of equity alone. The choice of discount rate is one of the most consequential and debated decisions in any valuation analysis.'},
+  {cat:'valuation', term:'Terminal Value', short:'The estimated value of a business beyond the explicit forecast period in a DCF, typically representing 60 to 80% of the total calculated enterprise value.', detail:'Because it dominates the DCF result, the terminal value is also the most sensitive and debated component. Analysts use either the Gordon Growth Model (applying a perpetuity growth rate) or an exit multiple (applying an EV/EBITDA multiple to the final year EBITDA) to calculate it.'},
+
+  /* INDIA SPECIFIC */
+  {cat:'india', term:'SEBI', short:'Securities and Exchange Board of India. The primary regulator of Indian capital markets, overseeing exchanges, listed companies, intermediaries, and investors.', detail:'SEBI\'s Listing Obligations and Disclosure Requirements (LODR) Regulations set minimum governance standards for listed companies. SEBI also regulates the DRHP process for IPOs, the green debt securities framework, and the Business Responsibility and Sustainability Reporting standards.'},
+  {cat:'india', term:'RBI (Reserve Bank of India)', short:'India\'s central bank, responsible for monetary policy, banking regulation, and currency management.', detail:'RBI\'s repo rate decisions directly influence the cost of borrowing for Indian corporates and reshape the DCM pipeline. The RBI also regulates foreign investment flows through the Foreign Exchange Management Act, which governs cross-border M&A transactions.'},
+  {cat:'india', term:'NSE and BSE', short:'The National Stock Exchange and the Bombay Stock Exchange, India\'s two primary stock exchanges.', detail:'The NSE is home to the Nifty 50 index, India\'s benchmark equity index. The BSE hosts the Sensex. Both exchanges are among the highest-volume equity markets in the world by number of transactions. India had over 420 mainboard IPO listings in FY26E across both exchanges.'},
+  {cat:'india', term:'BRSR (Business Responsibility and Sustainability Report)', short:'A mandatory ESG disclosure framework introduced by SEBI for the top 1,000 listed companies in India from FY23 onwards.', detail:'The BRSR replaced the older Business Responsibility Report and aligns India\'s ESG reporting more closely with global standards including the GRI and the emerging ISSB framework. It is the primary ESG disclosure document reviewed during domestic M&A due diligence in India.'},
+  {cat:'india', term:'National Infrastructure Pipeline (NIP)', short:'The Government of India\'s plan to invest approximately $1.4T in infrastructure projects across roads, railways, ports, airports, and energy from 2020 to 2030.', detail:'The NIP creates a significant pipeline of project finance mandates for investment banks. Foreign institutional investors and sovereign wealth funds have shown strong appetite for Indian infrastructure assets, driving deal flow across both debt and equity capital markets.'},
+  {cat:'india', term:'Qualified Institutional Buyer (QIB)', short:'An institution recognised by SEBI as sophisticated enough to participate in certain securities offerings without full retail investor protections, including mutual funds, insurance companies, and foreign institutional investors.', detail:'QIBs are the primary investors in QIPs and receive priority allocation in book-built IPOs. Their participation signals institutional confidence in a transaction and is closely watched by retail investors and the media as a quality indicator.'},
+  {cat:'india', term:'FII (Foreign Institutional Investor)', short:'A foreign entity registered with SEBI to invest in Indian capital markets, including foreign mutual funds, pension funds, and sovereign wealth funds.', detail:'FII inflows into Indian equity markets were estimated at approximately $28B in FY26E, providing a key source of demand for IPOs and QIPs. FII sentiment is one of the most watched indicators of confidence in the Indian market by domestic corporate treasurers and investment bankers.'},
+  {cat:'india', term:'CCI (Competition Commission of India)', short:'India\'s antitrust regulator, responsible for reviewing mergers and acquisitions above defined thresholds to prevent combinations that could harm competition.', detail:'The HDFC and HDFC Bank merger required CCI approval alongside RBI, SEBI, and NCLT clearances, illustrating the multi-regulator complexity of large Indian financial sector transactions. CCI review timelines have been a consideration in structuring cross-border deals involving Indian assets.'},
+
+  /* ESG AND AI */
+  {cat:'esg', term:'ESG (Environmental, Social, Governance)', short:'A framework for assessing how a company manages its impact on the environment, its relationships with people, and the quality of its leadership and controls.', detail:'In investment banking, ESG has moved from a reporting exercise to a transaction gating criterion. Every deal above approximately $500M now requires a formal ESG assessment. Institutional investors with ESG mandates will decline to participate if minimum standards are not met.'},
+  {cat:'esg', term:'Green Bond', short:'A bond whose proceeds are designated exclusively for projects with clear environmental benefits such as renewable energy, clean transport, or sustainable water management.', detail:'India\'s first Sovereign Green Bond was issued in January 2023, raising INR 16,000 crore at a yield 5 to 6 basis points below equivalent conventional bonds. The pricing advantage, known as the greenium, reflects strong investor demand for labelled sustainable assets.'},
+  {cat:'esg', term:'Sustainability-Linked Bond (SLB)', short:'A bond whose interest rate adjusts based on whether the issuer meets predetermined ESG performance targets, rather than ring-fencing proceeds for specific green projects.', detail:'Unlike a green bond, an SLB allows proceeds to be used for any corporate purpose. If the issuer misses its ESG targets, for example failing to reduce emissions intensity by a specified percentage, the coupon steps up, imposing a direct financial penalty. This structure is favoured by companies with broad sustainability ambitions rather than specific green projects.'},
+  {cat:'esg', term:'Greenium', short:'The pricing advantage, typically 3 to 10 basis points, that well-structured green or sustainable bonds achieve versus equivalent conventional bonds.', detail:'The greenium reflects the excess demand for labelled sustainable securities among ESG-mandated investors. Banks price this benefit for their clients as a tangible financial return from sustainable finance structuring, making the business case for green issuance beyond reputational benefits.'},
+  {cat:'esg', term:'Scope 1, 2, and 3 Emissions', short:'A framework for categorising a company\'s greenhouse gas emissions by source, used in ESG due diligence and sustainability reporting.', detail:'Scope 1 covers direct emissions from owned operations. Scope 2 covers indirect emissions from purchased electricity. Scope 3 covers all other indirect emissions across the value chain, including supplier and customer emissions. Scope 3 is the largest and hardest to measure category and is increasingly required in ESG due diligence for transactions.'},
+  {cat:'esg', term:'ISSB (International Sustainability Standards Board)', short:'The body that published IFRS S1 and S2 in 2023, creating a global baseline for sustainability-related financial disclosures.', detail:'ISSB standards are progressively being adopted by regulators worldwide. India\'s SEBI has indicated alignment with ISSB in developing future BRSR requirements. For investment banks, ISSB-aligned reporting is becoming a standard expectation in cross-border transactions involving international institutional investors.'},
+  {cat:'esg', term:'Generative AI in Investment Banking', short:'The application of large language model tools to automate analytical tasks in investment banking, including due diligence review, pitch book drafting, and deal origination.', detail:'In 2026, generative AI reduces due diligence timelines by 40 to 60% by automatically reviewing contracts, financial statements, and regulatory filings. Banks use AI to continuously monitor SEBI filings, earnings transcripts, and corporate announcements for signals of potential deal activity, surfacing opportunities 40 to 60% earlier in the client decision cycle than manual research.'},
+  {cat:'esg', term:'ESG Due Diligence', short:'A dedicated workstream in M&A transactions that assesses the environmental, social, and governance risks and opportunities of the target company across its full value chain.', detail:'ESG due diligence findings can result in a purchase price reduction for material liabilities, the inclusion of ESG representations in the sale and purchase agreement, and a post-acquisition integration plan to close identified gaps. In India, manufacturing acquisitions require particular attention to pollution control compliance and labour law adherence.'},
+];
+
+function buildGlossary(filter){
+  var terms = filter === 'all' ? GL_TERMS : GL_TERMS.filter(function(t){return t.cat === filter;});
+  terms.sort(function(a,b){return a.term.localeCompare(b.term);});
+  var grid = document.getElementById('gl-grid');
+  if(!grid) return;
+  grid.innerHTML = terms.map(function(t, i){
+    var colors = {core:'var(--gold)',deals:'var(--blue-lt)',markets:'var(--green)',valuation:'var(--purple)',india:'var(--amber)',esg:'var(--teal)'};
+    var catLabels = {core:'Core Concept',deals:'Deals and M&A',markets:'Capital Markets',valuation:'Valuation',india:'India Specific',esg:'ESG and AI'};
+    var col = colors[t.cat] || 'var(--gold)';
+    var lbl = catLabels[t.cat] || t.cat;
+    return '<div class="insight" style="border-left-color:'+col+';animation:fadeUp .4s ease '+(i*0.04).toFixed(2)+'s both;cursor:pointer" onclick="toggleGlDetail(this)">'
+      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">'
+      + '<div class="insight-title" style="margin-bottom:0;flex:1">'+t.term+'</div>'
+      + '<span style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:'+col+';flex-shrink:0;margin-left:10px;margin-top:2px">'+lbl+'</span>'
+      + '</div>'
+      + '<div class="insight-desc" style="color:var(--text-2)">'+t.short+'</div>'
+      + '<div class="gl-detail" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border-1);font-size:11.5px;color:var(--text-2);line-height:1.7">'+t.detail+'</div>'
+      + '<div style="margin-top:8px;font-size:10px;color:var(--text-3);font-weight:600;letter-spacing:.5px">Tap to expand</div>'
+      + '</div>';
+  }).join('');
+}
+
+function toggleGlDetail(el){
+  var detail = el.querySelector('.gl-detail');
+  var hint = el.querySelectorAll('div[style*="Tap to expand"]')[0];
+  if(!detail) return;
+  var isOpen = detail.style.display === 'block';
+  detail.style.display = isOpen ? 'none' : 'block';
+  if(hint) hint.textContent = isOpen ? 'Tap to expand' : 'Tap to collapse';
+}
+
+function filterGl(cat, btn){
+  document.querySelectorAll('#gl-filters .toggle-btn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  buildGlossary(cat);
+}
+
+/* Init glossary when tab opens */
+var _origInitTab = initTab;
+initTab = function(id){
+  _origInitTab(id);
+  if(id === 'gl') buildGlossary('all');
+};
+
+chartInited['ov']=false;
+</script>
+</body>
+</html>
